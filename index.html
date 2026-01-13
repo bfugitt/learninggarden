@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Garden</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff9c4 50%, #ffe0b2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #4caf50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .category {
+            margin-bottom: 15px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-header:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateX(5px);
+        }
+
+        .category-icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .category-title {
+            font-size: 1.2em;
+            color: #333;
+            flex-grow: 1;
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            color: #4caf50;
+            transition: transform 0.3s;
+        }
+
+        .toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            padding: 0 10px;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #4caf50, #ff9800, #2196f3);
+        }
+
+        .app-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .app-card:active {
+            transform: scale(0.98);
+        }
+
+        .app-name {
+            font-size: 1em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .app-description {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌱 Learning Garden 🌱</h1>
+            <p class="subtitle">Explore, Learn, and Grow</p>
+        </header>
+
+        <div id="categories"></div>
+    </div>
+
+    <script>
+        const apps = {
+            "Mathematics Practice & Skills": {
+                icon: "🔢",
+                apps: [
+                    { name: "Fast Facts", url: "https://bfugitt.github.io/fastfacts/", desc: "Practice all four math operations with score tracking" },
+                    { name: "Math Cards", url: "https://bfugitt.github.io/mathcards/", desc: "Memory card game with math facts" },
+                    { name: "Long Division", url: "https://bfugitt.github.io/division/", desc: "Step-by-step long division practice" },
+                    { name: "Multiplication", url: "https://bfugitt.github.io/multiplication/", desc: "Multi-digit multiplication practice" },
+                    { name: "Points and Lines", url: "https://bfugitt.github.io/rene/", desc: "Coordinate graphing practice" },
+                    { name: "Math Muncher", url: "https://bfugitt.github.io/muncher/", desc: "Pac-Man style factors game" },
+                    { name: "Math Diver", url: "https://bfugitt.github.io/mathdiver/", desc: "Catch falling factors" },
+                    { name: "Factor Factory", url: "https://bfugitt.github.io/factorfactory/", desc: "Game-based factor practice" },
+                    { name: "Factor Garden", url: "https://bfugitt.github.io/factorgarden", desc: "Collection of factor games" },
+                    { name: "Fraction Garden", url: "https://bfugitt.github.io/fractiongarden", desc: "Common denominators and adding fractions" },
+                    { name: "Primary Facts", url: "https://bfugitt.github.io/student-pages/primary_facts_v4.html", desc: "Addition and subtraction drills" },
+                    { name: "Elementary Facts", url: "https://bfugitt.github.io/student-pages/elementary_facts_v2.html", desc: "All four operations practice" },
+                    { name: "Mastery Practice", url: "https://bfugitt.github.io/student-pages/facts_master_v6.html", desc: "Grade level facts with certificates" },
+                    { name: "Math Facts Duel", url: "https://bfugitt.github.io/student-pages/facts_battle_v4.html", desc: "Two player math facts game" },
+                    { name: "System 6 Math", url: "https://bfugitt.github.io/student-pages/system6_math.html", desc: "Adaptive learning math facts" }
+                ]
+            },
+            "Music Creation & Theory": {
+                icon: "🎵",
+                apps: [
+                    { name: "Sound Garden", url: "https://bfugitt.github.io/kidsynth", desc: "Synthesizer with visual sequencer" },
+                    { name: "WebSynth", url: "https://bfugitt.github.io/web-synth", desc: "Advanced audio synthesizer" },
+                    { name: "MIDI Sequencer", url: "https://bfugitt.github.io/midiseq", desc: "Connect to hardware synthesizers" },
+                    { name: "Songer", url: "https://bfugitt.github.io/songer/", desc: "Chord progression player with drums" },
+                    { name: "Guitar", url: "https://bfugitt.github.io/guitar/", desc: "Chord transition practice" },
+                    { name: "Guitar Theory", url: "https://bfugitt.github.io/guitartheory/", desc: "Notation and tablature instruction" },
+                    { name: "Guitar Theory 2", url: "https://bfugitt.github.io/guitartheory/gt2.html", desc: "Updated guitar theory with modern interface" }
+                ]
+            },
+            "Language Arts & Vocabulary": {
+                icon: "📚",
+                apps: [
+                    { name: "Word Garden", url: "https://bfugitt.github.io/wordgarden/", desc: "Dictionary with vocabulary games" },
+                    { name: "Vocabulary", url: "https://bfugitt.github.io/macvocab/", desc: "Fourth-grade vocabulary practice" },
+                    { name: "Vocabulary Garden", url: "https://bfugitt.github.io/vocabgarden/", desc: "Enhanced vocabulary practice" },
+                    { name: "MacType", url: "https://bfugitt.github.io/mactype/", desc: "Keyboarding skills practice" },
+                    { name: "BibleType", url: "https://bfugitt.github.io/bibletype/", desc: "Typing with biblical vocabulary" },
+                    { name: "Latin Roots", url: "https://bfugitt.github.io/maclatin/", desc: "Latin vocabulary and root words" },
+                    { name: "Magister", url: "https://bfugitt.github.io/magister/", desc: "Advanced Latin conjugations" }
+                ]
+            },
+            "Social Studies & Geography": {
+                icon: "🌍",
+                apps: [
+                    { name: "States Map", url: "https://bfugitt.github.io/states/", desc: "U.S. states and capitals practice" },
+                    { name: "World Map", url: "https://bfugitt.github.io/world/", desc: "Global geography practice" },
+                    { name: "Royal Families", url: "https://bfugitt.github.io/learnit/?mod=royals.json", desc: "European royal families quiz" },
+                    { name: "El Camino Real", url: "https://bfugitt.github.io/elcaminoreal/", desc: "California mission history adventure" },
+                    { name: "Mission Builder", url: "https://bfugitt.github.io/missionbuilder", desc: "Design California missions" }
+                ]
+            },
+            "Creative & Art Tools": {
+                icon: "🎨",
+                apps: [
+                    { name: "PixArt Studio", url: "https://bfugitt.github.io/pixart/", desc: "Pixel art and animation" },
+                    { name: "VectorArt", url: "https://bfugitt.github.io/vectorpaint/", desc: "Vector drawing and animation" },
+                    { name: "Reggio Animation", url: "https://bfugitt.github.io/regart/", desc: "Reggio-inspired art and animation" }
+                ]
+            },
+            "Logic & Problem Solving": {
+                icon: "🧩",
+                apps: [
+                    { name: "Logic", url: "https://bfugitt.github.io/logic/", desc: "Logical reasoning puzzles" },
+                    { name: "Game of Life", url: "https://bfugitt.github.io/conway/", desc: "Conway's cellular automaton" },
+                    { name: "Vector Life", url: "https://bfugitt.github.io/vectorlife/", desc: "Game of Life with retro graphics" }
+                ]
+            },
+//            "Digital Learning Environments": {
+//                icon: "💻",
+ //               apps: [
+//                    { name: "Emilia", url: "https://bfugitt.github.io/emilia", desc: "Reggio-inspired desktop environment" },
+//                    { name: "Chicago", url: "https://bfugitt.github.io/chicago", desc: "Mac System 6-inspired environment" }
+//                ]
+//            },
+            "Communication & Collaboration": {
+                icon: "💬",
+                apps: [
+  //                  { name: "Joli Chat (Teacher)", url: "https://bfugitt.github.io/jolichat/?teacher=true", desc: "Teacher control panel for chat" },
+                    { name: "Joli Chat (Student)", url: "https://bfugitt.github.io/jolichat/", desc: "Safe student chat room" }
+
+                ]
+            },
+            "Multi-Purpose Learning": {
+                icon: "🎯",
+                apps: [
+                    { name: "LearnIt", url: "https://bfugitt.github.io/learnit/", desc: "Flexible learning module platform" }
+                ]
+            }
+        };
+
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            container.innerHTML = '';
+
+            Object.entries(apps).forEach(([category, data]) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                categoryDiv.dataset.category = category;
+
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'category-header';
+                headerDiv.onclick = () => toggleCategory(category);
+
+                headerDiv.innerHTML = `
+                    <div class="category-icon">${data.icon}</div>
+                    <div class="category-title">${category}</div>
+                    <div class="toggle-icon collapsed">▼</div>
+                `;
+
+                const appsGrid = document.createElement('div');
+                appsGrid.className = 'apps-grid hidden';
+                appsGrid.id = `grid-${category.replace(/\s+/g, '-')}`;
+
+                data.apps.forEach(app => {
+                    const appCard = document.createElement('div');
+                    appCard.className = 'app-card';
+                    appCard.dataset.name = app.name.toLowerCase();
+                    appCard.dataset.desc = app.desc.toLowerCase();
+                    appCard.onclick = () => window.open(app.url, '_blank');
+
+                    appCard.innerHTML = `
+                        <div class="app-name">${app.name}</div>
+                        <div class="app-description">${app.desc}</div>
+                    `;
+
+                    appsGrid.appendChild(appCard);
+                });
+
+                categoryDiv.appendChild(headerDiv);
+                categoryDiv.appendChild(appsGrid);
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        function toggleCategory(category) {
+            const gridId = `grid-${category.replace(/\s+/g, '-')}`;
+            const grid = document.getElementById(gridId);
+            const categoryDiv = grid.closest('.category');
+            const toggleIcon = categoryDiv.querySelector('.toggle-icon');
+
+            if (grid.classList.contains('hidden')) {
+                grid.classList.remove('hidden');
+                toggleIcon.classList.remove('collapsed');
+            } else {
+                grid.classList.add('hidden');
+                toggleIcon.classList.add('collapsed');
+            }
+        }
+
+        function searchApps(query) {
+            const searchTerm = query.toLowerCase().trim();
+            let hasResults = false;
+
+            document.querySelectorAll('.category').forEach(category => {
+                const grid = category.querySelector('.apps-grid');
+                const toggleIcon = category.querySelector('.toggle-icon');
+                let categoryHasResults = false;
+
+                category.querySelectorAll('.app-card').forEach(card => {
+                    const name = card.dataset.name;
+                    const desc = card.dataset.desc;
+
+                    if (searchTerm === '' || name.includes(searchTerm) || desc.includes(searchTerm)) {
+                        card.classList.remove('hidden');
+                        categoryHasResults = true;
+                        hasResults = true;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                if (searchTerm === '') {
+                    category.classList.remove('hidden');
+                    grid.classList.remove('hidden');
+                    toggleIcon.classList.remove('collapsed');
+                } else if (categoryHasResults) {
+                    category.classList.remove('hidden');
+                    grid.classList.remove('hidden');
+                    toggleIcon.classList.remove('collapsed');
+                } else {
+                    category.classList.add('hidden');
+                }
+            });
+        }
+
+        renderCategories();
+    </script>
+</body>
+</html>
