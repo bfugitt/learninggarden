@@ -3,195 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Garden</title>
+    <title>The Learning Garden</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Lora (Serif) for headings, Nunito (Sans) for text -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Configuration for Tailwind to use our custom fonts and colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    },
+                    colors: {
+                        'garden-cream': '#FDFBF7',
+                        'garden-green': '#4A6741',
+                        'garden-light-green': '#8FBC8F',
+                        'garden-sage': '#C4D7C4',
+                        'garden-dirt': '#8B5E3C',
+                        'garden-clay': '#D29C78',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FDFBF7; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C4D7C4; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8FBC8F; 
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f5e9 0%, #fff9c4 50%, #ffe0b2 100%);
-            min-height: 100vh;
-            padding: 20px;
+        /* Smooth fading animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            animation: fadeIn 1s ease-in;
-        }
-
-        h1 {
-            font-size: 2em;
-            color: #4caf50;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 5px;
-        }
-
-        .subtitle {
-            font-size: 1em;
-            color: #666;
-            font-style: italic;
-        }
-
-        .category {
-            margin-bottom: 15px;
-            animation: slideUp 0.8s ease-out;
-        }
-
-        .category-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .category-header:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateX(5px);
-        }
-
-        .category-icon {
-            font-size: 1.5em;
-            margin-right: 10px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .category-title {
-            font-size: 1.2em;
-            color: #333;
-            flex-grow: 1;
-        }
-
-        .toggle-icon {
-            font-size: 1.2em;
-            color: #4caf50;
-            transition: transform 0.3s;
-        }
-
-        .toggle-icon.collapsed {
-            transform: rotate(-90deg);
-        }
-
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
-            padding: 0 10px;
-        }
-
-        .app-card {
-            background: white;
-            border-radius: 10px;
-            padding: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .app-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #4caf50, #ff9800, #2196f3);
-        }
-
-        .app-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .app-card:active {
-            transform: scale(0.98);
-        }
-
-        .app-name {
-            font-size: 1em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 6px;
-        }
-
-        .app-description {
-            font-size: 0.85em;
-            color: #666;
-            line-height: 1.3;
-        }
-
-        .hidden {
-            display: none;
-        }
-
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        /* Card hover effects */
+        .app-card {
+            transition: all 0.3s ease;
+        }
+        .app-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.2em;
-            color: #666;
+        /* Chevron rotation transition */
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+        .chevron.rotate-180 {
+            transform: rotate(180deg);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🌱 Learning Garden 🌱</h1>
-            <p class="subtitle">Explore, Learn, and Grow</p>
-        </header>
+<body class="bg-garden-cream text-gray-800 font-sans min-h-screen flex flex-col">
 
-        <div id="categories"></div>
+    <!-- Navbar / Header -->
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 border-b border-garden-sage/30 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">🌱</span>
+                <div>
+                    <h1 class="font-serif text-2xl font-bold text-garden-green leading-none">Learning Garden</h1>
+                    <p class="text-xs text-stone-500 italic">Explore, Learn, and Grow</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- Search Bar -->
+                <div class="hidden md:flex relative">
+                    <input type="text" id="searchInput" placeholder="Find a tool..." 
+                        class="pl-9 pr-4 py-2 bg-garden-cream border border-garden-sage rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-garden-light-green transition-all w-48 focus:w-64">
+                    <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+                </div>
+                
+                <!-- About Button -->
+                <button onclick="toggleModal('aboutModal')" class="p-2 hover:bg-garden-sage/20 rounded-full transition-colors" title="About">
+                    <span class="text-xl">ℹ️</span>
+                </button>
+                
+                <!-- Settings/Reset Button -->
+                <button onclick="toggleModal('settingsModal')" class="p-2 hover:bg-garden-sage/20 rounded-full transition-colors" title="Settings">
+                    <span class="text-xl">⚙️</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Search (visible only on small screens) -->
+        <div class="md:hidden px-4 pb-3">
+            <input type="text" id="mobileSearchInput" placeholder="Find a tool..." 
+                class="w-full pl-4 pr-4 py-2 bg-garden-cream border border-garden-sage rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-garden-light-green">
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 flex-grow">
+        
+        <!-- Stats / Gamification Banner -->
+        <div class="bg-white rounded-2xl p-4 mb-8 border border-garden-sage/30 shadow-sm flex flex-wrap items-center justify-between gap-4 fade-in">
+            <div class="flex items-center gap-4">
+                <div class="bg-garden-sage/30 p-3 rounded-full h-12 w-12 flex items-center justify-center text-2xl" id="levelIcon">
+                    🌱
+                </div>
+                <div>
+                    <h2 class="font-bold text-garden-green text-lg" id="gardenerTitle">Seedling</h2>
+                    <p class="text-sm text-gray-500">You have explored <span id="visitCount" class="font-bold text-garden-dirt">0</span> tools.</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                 <div class="text-xs bg-garden-cream px-3 py-1 rounded-full border border-garden-sage/50 text-gray-600">
+                    Favorites: <span id="favCount" class="font-bold">0</span>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Favorites Section (Hidden by default until items added) -->
+        <section id="favoritesSection" class="mb-10 hidden fade-in">
+            <h2 class="font-serif text-xl text-garden-dirt border-b-2 border-garden-sage/30 pb-2 mb-4 flex items-center gap-2">
+                <span>❤️</span> Favorites
+            </h2>
+            <div id="favoritesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- Favorite Cards Injected Here -->
+            </div>
+        </section>
+
+        <!-- All Categories Container -->
+        <div id="categoriesContainer" class="space-y-4">
+            <!-- Categories Injected Here -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-12">
+            <div class="text-4xl mb-2">🍃</div>
+            <p class="text-gray-500 font-serif text-lg">Nothing found in the garden matching that name.</p>
+            <button onclick="clearSearch()" class="mt-4 px-4 py-2 text-sm bg-garden-green text-white rounded-full hover:bg-garden-light-green transition-colors">Clear Search</button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-garden-sage/30 mt-auto">
+        <div class="container mx-auto px-4 py-6 text-center text-stone-500 text-sm">
+            <p>© 2026 Learning Garden. Reggio Emilia Inspired.</p>
+        </div>
+    </footer>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-serif text-2xl text-garden-green font-bold">About Our Garden</h3>
+                <button onclick="toggleModal('aboutModal')" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <div class="prose prose-stone text-sm mb-6" id="aboutText">
+                <!-- Text injected from script -->
+            </div>
+            <button onclick="toggleModal('aboutModal')" class="w-full py-2 bg-garden-green text-white rounded-lg hover:bg-garden-light-green transition-colors">Close</button>
+        </div>
     </div>
 
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-serif text-xl text-garden-dirt font-bold">Settings</h3>
+                <button onclick="toggleModal('settingsModal')" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <p class="text-sm text-gray-600 mb-6">Need a fresh start? This will clear all your favorites and exploration badges.</p>
+            
+            <button onclick="resetData()" class="w-full py-2 border-2 border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
+                <span>🗑️</span> Reset Progress
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        const apps = {
-            "Mathematics Practice & Skills": {
+        /**
+         * TEACHER CONFIGURATION AREA
+         */
+        const CONFIG = {
+            aboutTitle: "Welcome, Learners!",
+            aboutContent: `
+                <p class="mb-2">Welcome to your digital atelier. This space is designed for you to explore, create, and discover new ideas.</p>
+                <p class="mb-2"><strong>How to use:</strong></p>
+                <ul class="list-disc pl-5 mb-2">
+                    <li>Click the <strong>Heart</strong> (❤️) to add tools to your favorites shelf.</li>
+                    <li>Click a <strong>Category Name</strong> to see the tools inside.</li>
+                    <li>Watch your "Gardener Level" grow as you explore more tools!</li>
+                </ul>
+                <p class="italic text-garden-green">"The wider the range of possibilities we offer children, the more intense will be their motivations." - Loris Malaguzzi</p>
+            `,
+            levels: [
+                { count: 0, title: "Seedling", icon: "🌱" },
+                { count: 5, title: "Sprout", icon: "🌿" },
+                { count: 15, title: "Gardener", icon: "🌻" },
+                { count: 30, title: "Master Gardener", icon: "🌳" },
+                { count: 50, title: "Forest Ranger", icon: "🌲" }
+            ]
+        };
+
+        // --- APP DATA ---
+        const appsData = {
+            "Mathematics": {
                 icon: "🔢",
-                apps: [
-
+                color: "bg-blue-50 border-blue-100",
+                items: [
                     { name: "Fraction Farm", url: "https://bfugitt.github.io/fractionfarm/", desc: "Grow your advanced fraction skills" },
-
                     { name: "Number Line Fractions", url: "https://bfugitt.github.io/numberlinefractions/", desc: "Place the fractions on the numberline" },
                     { name: "Fraction Tiles", url: "https://bfugitt.github.io/fractiontiles/", desc: "Build and compare fractions" },
-
                     { name: "Visual Fractions", url: "https://bfugitt.github.io/visualfractions/", desc: "Sort the fractions and pictures" },
                     { name: "Fraction Munchers", url: "https://bfugitt.github.io/fractionmuncher/", desc: "Chomp the correct fraction" },
                     { name: "Fraction Garden", url: "https://bfugitt.github.io/fractiongarden/", desc: "Learn about working with fractions" },
                     { name: "Fraction Cards", url: "https://bfugitt.github.io/fractioncards/", desc: "Find that cards that match the rule" },
-                
-                    
-                    { name: "Fast Facts", url: "https://bfugitt.github.io/fastfacts/", desc: "Practice all four math operations with score tracking" },
+                    { name: "Fast Facts", url: "https://bfugitt.github.io/fastfacts/", desc: "Practice all four math operations" },
                     { name: "Math Cards", url: "https://bfugitt.github.io/mathcards/", desc: "Memory card game with math facts" },
                     { name: "Long Division", url: "https://bfugitt.github.io/division/", desc: "Step-by-step long division practice" },
                     { name: "Multiplication", url: "https://bfugitt.github.io/multiplication/", desc: "Multi-digit multiplication practice" },
@@ -200,7 +244,6 @@
                     { name: "Math Diver", url: "https://bfugitt.github.io/mathdiver/", desc: "Catch falling factors" },
                     { name: "Factor Factory", url: "https://bfugitt.github.io/factorfactory/", desc: "Game-based factor practice" },
                     { name: "Factor Garden", url: "https://bfugitt.github.io/factorgarden", desc: "Collection of factor games" },
- 
                     { name: "Primary Facts", url: "https://bfugitt.github.io/student-pages/primary_facts_v4.html", desc: "Addition and subtraction drills" },
                     { name: "Elementary Facts", url: "https://bfugitt.github.io/student-pages/elementary_facts_v2.html", desc: "All four operations practice" },
                     { name: "Mastery Practice", url: "https://bfugitt.github.io/student-pages/facts_master_v6.html", desc: "Grade level facts with certificates" },
@@ -208,30 +251,28 @@
                     { name: "System 6 Math", url: "https://bfugitt.github.io/student-pages/system6_math.html", desc: "Adaptive learning math facts" }
                 ]
             },
-            "Music Creation & Theory": {
+            "Music & Audio": {
                 icon: "🎵",
-                apps: [
+                color: "bg-purple-50 border-purple-100",
+                items: [
                     { name: "Sound Garden", url: "https://bfugitt.github.io/kidsynth", desc: "Synthesizer with visual sequencer" },
-                    { name: "Volca", url: "https://bfugitt.github.io/volca", desc: "Plug in the Volca Sample.  Headphones in the machine." },
-                    { name: "Jt4000", url: "https://bfugitt.github.io/jt4000", desc: "Plug in the JT400.  Headphones in the machine." },
-                    { name: "ProVSmini", url: "https://bfugitt.github.io/provsmini", desc: "Plug in the ProVsmini.  Headphones in the machine." },
-                    { name: "Poly D", url: "https://bfugitt.github.io/polyd", desc: "Plug in the Poly D.  Headphones in the machine." },
-
-
-                    
+                    { name: "Volca", url: "https://bfugitt.github.io/volca", desc: "Plug in the Volca Sample" },
+                    { name: "Jt4000", url: "https://bfugitt.github.io/jt4000", desc: "Plug in the JT400" },
+                    { name: "ProVSmini", url: "https://bfugitt.github.io/provsmini", desc: "Plug in the ProVsmini" },
+                    { name: "Poly D", url: "https://bfugitt.github.io/polyd", desc: "Plug in the Poly D" },
                     { name: "WebSynth", url: "https://bfugitt.github.io/web-synth", desc: "Advanced audio synthesizer" },
                     { name: "MIDI Sequencer", url: "https://bfugitt.github.io/midiseq", desc: "Connect to hardware synthesizers" },
                     { name: "Songer", url: "https://bfugitt.github.io/songer/", desc: "Chord progression player with drums" },
                     { name: "Guitar", url: "https://bfugitt.github.io/guitar/", desc: "Chord transition practice" },
                     { name: "Guitar Theory", url: "https://bfugitt.github.io/guitartheory/", desc: "Notation and tablature instruction" },
-                    { name: "Guitar Theory 2", url: "https://bfugitt.github.io/guitartheory/gt2.html", desc: "Updated guitar theory with modern interface" }
+                    { name: "Guitar Theory 2", url: "https://bfugitt.github.io/guitartheory/gt2.html", desc: "Updated guitar theory" }
                 ]
             },
-            "Language Arts & Vocabulary": {
+            "Language Arts": {
                 icon: "📚",
-                apps: [
+                color: "bg-yellow-50 border-yellow-100",
+                items: [
                     { name: "Typing Garden", url: "https://bfugitt.github.io/gardentype/", desc: "A relaxing typing practice" },
-
                     { name: "Word Garden", url: "https://bfugitt.github.io/wordgarden/", desc: "Dictionary with vocabulary games" },
                     { name: "Vocabulary", url: "https://bfugitt.github.io/macvocab/", desc: "Fourth-grade vocabulary practice" },
                     { name: "Vocabulary Garden", url: "https://bfugitt.github.io/vocabgarden/", desc: "Enhanced vocabulary practice" },
@@ -241,158 +282,332 @@
                     { name: "Magister", url: "https://bfugitt.github.io/magister/", desc: "Advanced Latin conjugations" }
                 ]
             },
-            "Social Studies & Science": {
+            "Social Studies": {
                 icon: "🌍",
-                apps: [
+                color: "bg-green-50 border-green-100",
+                items: [
                     { name: "States Map", url: "https://bfugitt.github.io/states/", desc: "U.S. states and capitals practice" },
                     { name: "World Map", url: "https://bfugitt.github.io/world/", desc: "Global geography practice" },
                     { name: "Zookeeper", url: "https://bfugitt.github.io/rogue/zookeeper1", desc: "Get the animals to the zoo!" },
-
                     { name: "Royal Families", url: "https://bfugitt.github.io/learnit/?mod=royals.json", desc: "European royal families quiz" },
                     { name: "Mission Trail Game", url: "https://bfugitt.github.io/rogue/calirogue", desc: "Mission trail silly game" },
                     { name: "El Camino Real", url: "https://bfugitt.github.io/elcaminoreal/", desc: "California mission history adventure" },
                     { name: "Mission Builder", url: "https://bfugitt.github.io/missionbuilder", desc: "Design California missions" }
                 ]
             },
-            "Creative & Art Tools": {
+            "Creative Tools": {
                 icon: "🎨",
-                apps: [
+                color: "bg-red-50 border-red-100",
+                items: [
                     { name: "Stamp Studio", url: "https://bfugitt.github.io/stampstudio/", desc: "Design your own stamps!" },
- 
                     { name: "PixArt Studio", url: "https://bfugitt.github.io/pixart/", desc: "Pixel art and animation" },
                     { name: "VectorArt", url: "https://bfugitt.github.io/vectorpaint/", desc: "Vector drawing and animation" },
                     { name: "Reggio Animation", url: "https://bfugitt.github.io/regart/", desc: "Reggio-inspired art and animation" }
                 ]
             },
-            "Logic & Problem Solving": {
+            "Logic & Puzzles": {
                 icon: "🧩",
-                apps: [
-                           { name: "Saints Journey", url: "https://bfugitt.github.io/rogue/saintrogue", desc: "Silly saints crawler" },
-                           { name: "Commuity Garden", url: "https://bfugitt.github.io/rogue/gardenrogue", desc: "Silly garden crawler" },
+                color: "bg-orange-50 border-orange-100",
+                items: [
+                    { name: "Saints Journey", url: "https://bfugitt.github.io/rogue/saintrogue", desc: "Silly saints crawler" },
+                    { name: "Community Garden", url: "https://bfugitt.github.io/rogue/gardenrogue", desc: "Silly garden crawler" },
                     { name: "Logic", url: "https://bfugitt.github.io/logic/", desc: "Logical reasoning puzzles" },
                     { name: "Game of Life", url: "https://bfugitt.github.io/conway/", desc: "Conway's cellular automaton" },
                     { name: "Vector Life", url: "https://bfugitt.github.io/vectorlife/", desc: "Game of Life with retro graphics" }
                 ]
             },
-//            "Digital Learning Environments": {
-//                icon: "💻",
- //               apps: [
-//                    { name: "Emilia", url: "https://bfugitt.github.io/emilia", desc: "Reggio-inspired desktop environment" },
-//                    { name: "Chicago", url: "https://bfugitt.github.io/chicago", desc: "Mac System 6-inspired environment" }
-//                ]
-//            },
-            "Communication & Collaboration": {
+            "Communication": {
                 icon: "💬",
-                apps: [
-  //                  { name: "Joli Chat (Teacher)", url: "https://bfugitt.github.io/jolichat/?teacher=true", desc: "Teacher control panel for chat" },
-                    { name: "Joli Chat (Student)", url: "https://bfugitt.github.io/jolichat/", desc: "Safe student chat room" }
-
+                color: "bg-teal-50 border-teal-100",
+                items: [
+                    { name: "Joli Chat", url: "https://bfugitt.github.io/jolichat/", desc: "Safe student chat room" }
                 ]
             },
-            "Multi-Purpose Learning": {
+             "Multi-Purpose": {
                 icon: "🎯",
-                apps: [
+                color: "bg-gray-50 border-gray-200",
+                items: [
                     { name: "LearnIt", url: "https://bfugitt.github.io/learnit/", desc: "Flexible learning module platform" }
                 ]
             }
         };
 
-        function renderCategories() {
-            const container = document.getElementById('categories');
-            container.innerHTML = '';
+        // --- STATE MANAGEMENT ---
+        let state = {
+            favorites: [],
+            visited: [],
+            expanded: [] // New: Tracks which categories are open
+        };
 
-            Object.entries(apps).forEach(([category, data]) => {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'category';
-                categoryDiv.dataset.category = category;
-
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'category-header';
-                headerDiv.onclick = () => toggleCategory(category);
-
-                headerDiv.innerHTML = `
-                    <div class="category-icon">${data.icon}</div>
-                    <div class="category-title">${category}</div>
-                    <div class="toggle-icon collapsed">▼</div>
-                `;
-
-                const appsGrid = document.createElement('div');
-                appsGrid.className = 'apps-grid hidden';
-                appsGrid.id = `grid-${category.replace(/\s+/g, '-')}`;
-
-                data.apps.forEach(app => {
-                    const appCard = document.createElement('div');
-                    appCard.className = 'app-card';
-                    appCard.dataset.name = app.name.toLowerCase();
-                    appCard.dataset.desc = app.desc.toLowerCase();
-                    appCard.onclick = () => window.open(app.url, '_blank');
-
-                    appCard.innerHTML = `
-                        <div class="app-name">${app.name}</div>
-                        <div class="app-description">${app.desc}</div>
-                    `;
-
-                    appsGrid.appendChild(appCard);
-                });
-
-                categoryDiv.appendChild(headerDiv);
-                categoryDiv.appendChild(appsGrid);
-                container.appendChild(categoryDiv);
-            });
-        }
-
-        function toggleCategory(category) {
-            const gridId = `grid-${category.replace(/\s+/g, '-')}`;
-            const grid = document.getElementById(gridId);
-            const categoryDiv = grid.closest('.category');
-            const toggleIcon = categoryDiv.querySelector('.toggle-icon');
-
-            if (grid.classList.contains('hidden')) {
-                grid.classList.remove('hidden');
-                toggleIcon.classList.remove('collapsed');
-            } else {
-                grid.classList.add('hidden');
-                toggleIcon.classList.add('collapsed');
+        // Load data from LocalStorage
+        function loadState() {
+            const saved = localStorage.getItem('gardenState');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                state.favorites = parsed.favorites || [];
+                state.visited = parsed.visited || [];
+                // We don't save expanded state to local storage, so it resets on refresh
             }
         }
 
+        // Save data to LocalStorage
+        function saveState() {
+            // We only save favorites and visited, not the UI expansion state
+            const toSave = {
+                favorites: state.favorites,
+                visited: state.visited
+            };
+            localStorage.setItem('gardenState', JSON.stringify(toSave));
+            updateStats();
+        }
+
+        // --- ACTIONS ---
+
+        function toggleFavorite(appName) {
+            const index = state.favorites.indexOf(appName);
+            if (index === -1) {
+                state.favorites.push(appName);
+            } else {
+                state.favorites.splice(index, 1);
+            }
+            saveState();
+            render(); 
+        }
+
+        function toggleCategory(catName) {
+            const index = state.expanded.indexOf(catName);
+            if (index === -1) {
+                state.expanded.push(catName);
+            } else {
+                state.expanded.splice(index, 1);
+            }
+            render();
+        }
+
+        function trackVisit(appName, url) {
+            if (!state.visited.includes(appName)) {
+                state.visited.push(appName);
+                saveState();
+            }
+            window.open(url, '_blank');
+        }
+
+        function resetData() {
+            if(confirm("Are you sure you want to reset all progress and favorites?")) {
+                state.favorites = [];
+                state.visited = [];
+                // keep expanded state as is
+                saveState();
+                toggleModal('settingsModal');
+                render();
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            searchApps('');
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // --- RENDER FUNCTIONS ---
+
+        function updateStats() {
+            const count = state.visited.length;
+            const favCount = state.favorites.length;
+            
+            // Determine Level
+            let currentLevel = CONFIG.levels[0];
+            for (let level of CONFIG.levels) {
+                if (count >= level.count) {
+                    currentLevel = level;
+                }
+            }
+
+            document.getElementById('visitCount').textContent = count;
+            document.getElementById('favCount').textContent = favCount;
+            document.getElementById('gardenerTitle').textContent = currentLevel.title;
+            document.getElementById('levelIcon').textContent = currentLevel.icon;
+        }
+
+        function createCard(app) {
+            const isFav = state.favorites.includes(app.name);
+            const isVisited = state.visited.includes(app.name);
+            
+            const heartClass = isFav ? "text-red-500 scale-110" : "text-gray-300 hover:text-red-300";
+            const heartFill = isFav ? "❤️" : "🤍";
+            const visitedBadge = isVisited ? `<span class="absolute top-2 left-2 text-xs bg-green-100 text-green-800 px-1.5 rounded-md opacity-80" title="Visited">✓</span>` : '';
+
+            return `
+                <div class="app-card relative bg-white rounded-xl border border-stone-100 p-4 flex flex-col h-full cursor-pointer group" onclick="if(!event.target.closest('.fav-btn')) trackVisit('${app.name}', '${app.url}')">
+                    ${visitedBadge}
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-gray-800 group-hover:text-garden-green transition-colors pr-6">${app.name}</h3>
+                        <button class="fav-btn absolute top-3 right-3 text-xl transition-transform active:scale-90 ${heartClass}" 
+                                onclick="toggleFavorite('${app.name}')" title="${isFav ? 'Remove Favorite' : 'Add Favorite'}">
+                            ${heartFill}
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-500 leading-snug">${app.desc}</p>
+                    <div class="mt-auto pt-3">
+                        <div class="h-1 w-0 group-hover:w-full bg-gradient-to-r from-garden-light-green to-garden-green transition-all duration-500 rounded-full"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function render() {
+            const categoriesContainer = document.getElementById('categoriesContainer');
+            const favoritesContainer = document.getElementById('favoritesSection');
+            const favoritesGrid = document.getElementById('favoritesGrid');
+            
+            categoriesContainer.innerHTML = '';
+            favoritesGrid.innerHTML = '';
+            
+            let hasFavorites = false;
+
+            // Render all categories
+            Object.entries(appsData).forEach(([catName, catData]) => {
+                const isExpanded = state.expanded.includes(catName);
+                
+                // Build Section Wrapper
+                const catSection = document.createElement('div');
+                catSection.className = `category-section fade-in bg-white rounded-2xl border border-stone-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow`;
+                catSection.dataset.category = catName.toLowerCase();
+                
+                // Header (Clickable)
+                const headerHtml = `
+                    <button onclick="toggleCategory('${catName}')" class="w-full flex items-center justify-between p-4 bg-white hover:bg-garden-cream/50 transition-colors focus:outline-none">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full ${catData.color} flex items-center justify-center text-xl shadow-sm">
+                                ${catData.icon}
+                            </div>
+                            <h2 class="font-serif text-xl font-bold text-gray-700">${catName}</h2>
+                        </div>
+                        <span class="chevron text-gray-400 text-xl ${isExpanded ? 'rotate-180' : ''}">▼</span>
+                    </button>
+                `;
+
+                // Grid Container
+                const gridContainerClass = isExpanded ? "block" : "hidden";
+                const gridHtml = `
+                    <div class="apps-grid bg-garden-cream/30 p-4 border-t border-stone-100 ${gridContainerClass}">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            ${catData.items.map(app => createCard(app)).join('')}
+                        </div>
+                    </div>
+                `;
+
+                catSection.innerHTML = headerHtml + gridHtml;
+                categoriesContainer.appendChild(catSection);
+
+                // Add to favorites (this part is just data processing for the fav section)
+                catData.items.forEach(app => {
+                    if (state.favorites.includes(app.name)) {
+                        favoritesGrid.innerHTML += createCard(app);
+                        hasFavorites = true;
+                    }
+                });
+            });
+
+            // Toggle Favorites Section
+            if (hasFavorites) {
+                favoritesContainer.classList.remove('hidden');
+            } else {
+                favoritesContainer.classList.add('hidden');
+            }
+            
+            updateStats();
+        }
+
         function searchApps(query) {
-            const searchTerm = query.toLowerCase().trim();
-            let hasResults = false;
+            const term = query.toLowerCase().trim();
+            const allSections = document.querySelectorAll('.category-section');
+            let totalFound = 0;
 
-            document.querySelectorAll('.category').forEach(category => {
-                const grid = category.querySelector('.apps-grid');
-                const toggleIcon = category.querySelector('.toggle-icon');
-                let categoryHasResults = false;
+            allSections.forEach(section => {
+                const sectionName = section.dataset.category;
+                const cards = section.querySelectorAll('.app-card');
+                const grid = section.querySelector('.apps-grid');
+                const chevron = section.querySelector('.chevron');
+                
+                let sectionHasMatch = false;
 
-                category.querySelectorAll('.app-card').forEach(card => {
-                    const name = card.dataset.name;
-                    const desc = card.dataset.desc;
-
-                    if (searchTerm === '' || name.includes(searchTerm) || desc.includes(searchTerm)) {
+                cards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const desc = card.querySelector('p').textContent.toLowerCase();
+                    
+                    if (title.includes(term) || desc.includes(term)) {
                         card.classList.remove('hidden');
-                        categoryHasResults = true;
-                        hasResults = true;
+                        sectionHasMatch = true;
+                        totalFound++;
                     } else {
                         card.classList.add('hidden');
                     }
                 });
 
-                if (searchTerm === '') {
-                    category.classList.remove('hidden');
+                if (term === '') {
+                    // Reset to state-based view if search cleared
+                    section.classList.remove('hidden');
+                    cards.forEach(c => c.classList.remove('hidden'));
+                    const catName = section.querySelector('h2').textContent;
+                    const shouldBeExpanded = state.expanded.includes(catName);
+                    
+                    if(shouldBeExpanded) {
+                        grid.classList.remove('hidden');
+                        chevron.classList.add('rotate-180');
+                    } else {
+                        grid.classList.add('hidden');
+                        chevron.classList.remove('rotate-180');
+                    }
+                } else if (sectionHasMatch) {
+                    // Force expand on search match
+                    section.classList.remove('hidden');
                     grid.classList.remove('hidden');
-                    toggleIcon.classList.remove('collapsed');
-                } else if (categoryHasResults) {
-                    category.classList.remove('hidden');
-                    grid.classList.remove('hidden');
-                    toggleIcon.classList.remove('collapsed');
+                    chevron.classList.add('rotate-180');
                 } else {
-                    category.classList.add('hidden');
+                    section.classList.add('hidden');
                 }
             });
+
+            const noResults = document.getElementById('noResults');
+            const favoritesSection = document.getElementById('favoritesSection');
+            
+            if (totalFound === 0 && term !== '') {
+                noResults.classList.remove('hidden');
+                favoritesSection.classList.add('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                if (term === '' && state.favorites.length > 0) {
+                    favoritesSection.classList.remove('hidden');
+                }
+            }
         }
 
-        renderCategories();
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            
+            // Optional: Uncomment this line if you want the first category (Mathematics) open by default
+            // state.expanded.push("Mathematics");
+            
+            render();
+            document.getElementById('aboutText').innerHTML = CONFIG.aboutContent;
+
+            // Search Listeners
+            const searchFn = (e) => searchApps(e.target.value);
+            document.getElementById('searchInput').addEventListener('input', searchFn);
+            document.getElementById('mobileSearchInput').addEventListener('input', searchFn);
+        });
+
     </script>
 </body>
 </html>
