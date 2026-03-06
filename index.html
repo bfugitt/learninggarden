@@ -34,163 +34,164 @@
     </script>
 
     <style>
-        /* Custom scrollbar for a cleaner look */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #FDFBF7; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #C4D7C4; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #8FBC8F; 
-        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #FDFBF7; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #C4D7C4; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8FBC8F; }
+        
+        /* Hide scrollbar for the horizontal tabs but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* Smooth fading animations */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         /* Card hover effects */
-        .app-card {
-            transition: all 0.3s ease;
-        }
+        .app-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .app-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #C4D7C4;
         }
 
-        /* Chevron rotation transition */
-        .chevron {
-            transition: transform 0.3s ease;
-        }
-        .chevron.rotate-180 {
-            transform: rotate(180deg);
-        }
+        /* Tab transition */
+        .garden-tab { transition: all 0.2s ease; }
+        .garden-tab:active { transform: scale(0.95); }
     </style>
 </head>
 <body class="bg-garden-cream text-gray-800 font-sans min-h-screen flex flex-col">
 
     <!-- Navbar / Header -->
-    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 border-b border-garden-sage/30 shadow-sm">
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-garden-sage/50 shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <span class="text-3xl">🌱</span>
+                <span class="text-3xl md:text-4xl">🌱</span>
                 <div>
-                    <h1 class="font-serif text-2xl font-bold text-garden-green leading-none">Learning Garden</h1>
-                    <p class="text-xs text-stone-500 italic">Explore, Learn, and Grow</p>
+                    <h1 class="font-serif text-2xl md:text-3xl font-bold text-garden-green leading-none tracking-tight">Learning Garden</h1>
+                    <p class="text-xs md:text-sm text-garden-dirt italic font-semibold">Explore, Learn, and Grow</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 md:gap-4">
                 <!-- Search Bar -->
-                <div class="hidden md:flex relative">
-                    <input type="text" id="searchInput" placeholder="Find a tool..." 
-                        class="pl-9 pr-4 py-2 bg-garden-cream border border-garden-sage rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-garden-light-green transition-all w-48 focus:w-64">
-                    <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+                <div class="hidden md:flex relative group">
+                    <input type="text" id="searchInput" placeholder="Search the garden..." 
+                        class="pl-10 pr-4 py-2 bg-garden-cream border-2 border-garden-sage rounded-full text-sm focus:outline-none focus:border-garden-green focus:ring-4 focus:ring-garden-green/20 transition-all w-56 focus:w-72 shadow-inner">
+                    <span class="absolute left-3 top-2.5 text-gray-400 group-focus-within:text-garden-green transition-colors text-lg">🔍</span>
                 </div>
                 
                 <!-- About Button -->
-                <button onclick="toggleModal('aboutModal')" class="p-2 hover:bg-garden-sage/20 rounded-full transition-colors" title="About">
+                <button onclick="toggleModal('aboutModal')" class="p-2 bg-garden-cream hover:bg-garden-sage/30 rounded-full transition-colors border border-garden-sage/30" title="About">
                     <span class="text-xl">ℹ️</span>
                 </button>
                 
                 <!-- Settings/Reset Button -->
-                <button onclick="toggleModal('settingsModal')" class="p-2 hover:bg-garden-sage/20 rounded-full transition-colors" title="Settings">
+                <button onclick="toggleModal('settingsModal')" class="p-2 bg-garden-cream hover:bg-garden-sage/30 rounded-full transition-colors border border-garden-sage/30" title="Settings">
                     <span class="text-xl">⚙️</span>
                 </button>
             </div>
         </div>
-        <!-- Mobile Search (visible only on small screens) -->
+        <!-- Mobile Search -->
         <div class="md:hidden px-4 pb-3">
-            <input type="text" id="mobileSearchInput" placeholder="Find a tool..." 
-                class="w-full pl-4 pr-4 py-2 bg-garden-cream border border-garden-sage rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-garden-light-green">
+            <div class="relative">
+                <input type="text" id="mobileSearchInput" placeholder="Search the garden..." 
+                    class="w-full pl-10 pr-4 py-2.5 bg-garden-cream border-2 border-garden-sage rounded-full text-sm focus:outline-none focus:border-garden-green shadow-inner">
+                <span class="absolute left-3 top-2.5 text-gray-400 text-lg">🔍</span>
+            </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-6 flex-grow">
+    <main class="container mx-auto px-4 py-6 flex-grow flex flex-col">
         
-        <!-- Stats / Gamification Banner -->
-        <div class="bg-white rounded-2xl p-4 mb-8 border border-garden-sage/30 shadow-sm flex flex-wrap items-center justify-between gap-4 fade-in">
+        <!-- Gamification Banner -->
+        <div class="bg-white rounded-2xl p-4 md:p-5 mb-6 border-2 border-garden-sage/40 shadow-sm flex flex-wrap items-center justify-between gap-4 fade-in">
             <div class="flex items-center gap-4">
-                <div class="bg-garden-sage/30 p-3 rounded-full h-12 w-12 flex items-center justify-center text-2xl" id="levelIcon">
+                <div class="bg-gradient-to-br from-garden-light-green to-garden-green text-white p-3 rounded-2xl h-14 w-14 flex items-center justify-center text-3xl shadow-inner border border-green-600/20" id="levelIcon">
                     🌱
                 </div>
                 <div>
-                    <h2 class="font-bold text-garden-green text-lg" id="gardenerTitle">Seedling</h2>
-                    <p class="text-sm text-gray-500">You have explored <span id="visitCount" class="font-bold text-garden-dirt">0</span> tools.</p>
+                    <h2 class="font-bold text-garden-green text-xl" id="gardenerTitle">Seedling</h2>
+                    <p class="text-sm text-gray-500 font-medium">You have explored <span id="visitCount" class="font-bold text-garden-dirt text-base">0</span> tools.</p>
                 </div>
             </div>
             <div class="flex gap-2">
-                 <div class="text-xs bg-garden-cream px-3 py-1 rounded-full border border-garden-sage/50 text-gray-600">
-                    Favorites: <span id="favCount" class="font-bold">0</span>
+                 <div class="text-sm bg-red-50 px-4 py-2 rounded-xl border border-red-100 text-red-800 font-bold flex items-center gap-2 shadow-sm">
+                    <span>❤️</span> <span id="favCount">0</span> Favorites
                  </div>
             </div>
         </div>
 
-        <!-- Favorites Section (Hidden by default until items added) -->
-        <section id="favoritesSection" class="mb-10 hidden fade-in">
-            <h2 class="font-serif text-xl text-garden-dirt border-b-2 border-garden-sage/30 pb-2 mb-4 flex items-center gap-2">
-                <span>❤️</span> Favorites
-            </h2>
-            <div id="favoritesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                <!-- Favorite Cards Injected Here -->
+        <!-- Garden Plot Navigation (Tabs) -->
+        <nav class="mb-6 fade-in">
+            <div class="flex items-center justify-center gap-2 mb-3 px-1">
+                <span class="text-garden-dirt font-serif font-bold text-lg">Signposts</span>
+                <span class="text-gray-400 text-sm">— Choose a plot to explore!</span>
             </div>
-        </section>
+            <div id="categoryTabs" class="flex flex-wrap justify-center gap-2 md:gap-3 pb-4 pt-1 px-1">
+                <!-- Tabs Injected Here -->
+            </div>
+        </nav>
 
-        <!-- All Categories Container -->
-        <div id="categoriesContainer" class="space-y-4">
-            <!-- Categories Injected Here -->
+        <!-- Current Plot Header -->
+        <div id="currentPlotHeader" class="flex items-center gap-3 mb-6 border-b-2 border-garden-sage/50 pb-3 fade-in">
+            <div id="plotIcon" class="w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-sm bg-gray-100">
+                📁
+            </div>
+            <h2 id="plotTitle" class="font-serif text-3xl font-bold text-gray-800">Plot Name</h2>
+        </div>
+
+        <!-- Apps Grid Area -->
+        <div id="appsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-10">
+            <!-- App Cards Injected Here -->
         </div>
 
         <!-- No Results Message -->
-        <div id="noResults" class="hidden text-center py-12">
-            <div class="text-4xl mb-2">🍃</div>
-            <p class="text-gray-500 font-serif text-lg">Nothing found in the garden matching that name.</p>
-            <button onclick="clearSearch()" class="mt-4 px-4 py-2 text-sm bg-garden-green text-white rounded-full hover:bg-garden-light-green transition-colors">Clear Search</button>
+        <div id="noResults" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-garden-sage fade-in">
+            <div class="text-6xl mb-4">🍃</div>
+            <h3 class="font-serif text-2xl font-bold text-garden-dirt mb-2">Oh no! A slight breeze!</h3>
+            <p class="text-gray-500 text-lg mb-6">We couldn't find any tools matching your search.</p>
+            <button onclick="clearSearch()" class="px-6 py-3 bg-garden-green text-white font-bold rounded-full hover:bg-garden-light-green transition-colors shadow-md">Clear Search and Return</button>
         </div>
 
     </main>
 
     <!-- Footer -->
     <footer class="bg-white border-t border-garden-sage/30 mt-auto">
-        <div class="container mx-auto px-4 py-6 text-center text-stone-500 text-sm">
+        <div class="container mx-auto px-4 py-6 text-center text-stone-500 text-sm font-medium">
             <p>© 2026 Learning Garden. Reggio Emilia Inspired.</p>
         </div>
     </footer>
 
     <!-- About Modal -->
-    <div id="aboutModal" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl transform transition-all">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-serif text-2xl text-garden-green font-bold">About Our Garden</h3>
-                <button onclick="toggleModal('aboutModal')" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+    <div id="aboutModal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-serif text-3xl text-garden-green font-bold">About Our Garden</h3>
+                <button onclick="toggleModal('aboutModal')" class="text-gray-400 hover:text-red-500 text-3xl transition-colors">&times;</button>
             </div>
-            <div class="prose prose-stone text-sm mb-6" id="aboutText">
+            <div class="prose prose-stone text-base mb-8 text-gray-600 leading-relaxed" id="aboutText">
                 <!-- Text injected from script -->
             </div>
-            <button onclick="toggleModal('aboutModal')" class="w-full py-2 bg-garden-green text-white rounded-lg hover:bg-garden-light-green transition-colors">Close</button>
+            <button onclick="toggleModal('aboutModal')" class="w-full py-3 bg-garden-green font-bold text-white rounded-xl hover:bg-garden-light-green transition-colors shadow-md text-lg">Close</button>
         </div>
     </div>
 
     <!-- Settings Modal -->
-    <div id="settingsModal" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl transform transition-all">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-serif text-xl text-garden-dirt font-bold">Settings</h3>
-                <button onclick="toggleModal('settingsModal')" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+    <div id="settingsModal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-8 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-serif text-2xl text-garden-dirt font-bold">Settings</h3>
+                <button onclick="toggleModal('settingsModal')" class="text-gray-400 hover:text-red-500 text-3xl transition-colors">&times;</button>
             </div>
-            <p class="text-sm text-gray-600 mb-6">Need a fresh start? This will clear all your favorites and exploration badges.</p>
+            <p class="text-base text-gray-600 mb-8 leading-relaxed">Need a fresh start? This will clear all your favorites and exploration badges so you can start planting anew.</p>
             
-            <button onclick="resetData()" class="w-full py-2 border-2 border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
+            <button onclick="resetData()" class="w-full py-3 border-2 border-red-200 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center gap-2 text-lg">
                 <span>🗑️</span> Reset Progress
             </button>
         </div>
@@ -202,16 +203,18 @@
          * TEACHER CONFIGURATION AREA
          */
         const CONFIG = {
-            aboutTitle: "Welcome, Learners!",
             aboutContent: `
-                <p class="mb-2">Welcome to your digital atelier. This space is designed for you to explore, create, and discover new ideas.</p>
-                <p class="mb-2"><strong>How to use:</strong></p>
-                <ul class="list-disc pl-5 mb-2">
-                    <li>Click the <strong>Heart</strong> (❤️) to add tools to your favorites shelf.</li>
-                    <li>Click a <strong>Category Name</strong> to see the tools inside.</li>
-                    <li>Watch your "Gardener Level" grow as you explore more tools!</li>
+                <p class="mb-3">Welcome to your digital atelier! This space is designed for you to explore, create, and discover new ideas.</p>
+                <p class="mb-2 font-bold text-gray-800">How to use:</p>
+                <ul class="list-disc pl-5 mb-4 space-y-1">
+                    <li>Click the <strong>Signposts</strong> at the top to visit different plots in the garden.</li>
+                    <li>Click the <strong>Heart</strong> (❤️) to add tools to your personal Favorites plot.</li>
+                    <li>Watch your "Gardener Level" grow as you explore!</li>
                 </ul>
-                <p class="italic text-garden-green">"The wider the range of possibilities we offer children, the more intense will be their motivations." - Loris Malaguzzi</p>
+                <div class="bg-garden-cream p-4 rounded-xl border border-garden-sage/50">
+                    <p class="italic text-garden-green font-serif">"The wider the range of possibilities we offer children, the more intense will be their motivations."</p>
+                    <p class="text-right text-sm mt-2 font-bold text-garden-dirt">- Loris Malaguzzi</p>
+                </div>
             `,
             levels: [
                 { count: 0, title: "Seedling", icon: "🌱" },
@@ -223,139 +226,134 @@
         };
 
         // --- APP DATA ---
+        // Apps are now ordered logically within their categories (Basics -> Advanced -> Games)
         const appsData = {
-            "Mathematics": {
-                icon: "🔢",
-                color: "bg-blue-50 border-blue-100",
+            "Math: Fractions": {
+                icon: "🍕",
+                color: "bg-blue-100 text-blue-800 border-blue-200",
+                bgColor: "bg-blue-50",
                 items: [
-                    { name: "Fraction Farm", url: "https://bfugitt.github.io/fractionfarm/", desc: "Grow your advanced fraction skills" },
-                    { name: "Number Line Fractions", url: "https://bfugitt.github.io/numberlinefractions/", desc: "Place the fractions on the numberline" },
-                    { name: "Fraction Tiles", url: "https://bfugitt.github.io/fractiontiles/", desc: "Build and compare fractions" },
-                    { name: "Visual Fractions", url: "https://bfugitt.github.io/visualfractions/", desc: "Sort the fractions and pictures" },
-                    { name: "Fraction Munchers", url: "https://bfugitt.github.io/fractionmuncher/", desc: "Chomp the correct fraction" },
-                    { name: "Fraction Garden", url: "https://bfugitt.github.io/fractiongarden/", desc: "Learn about working with fractions" },
-                    { name: "Fraction Garden: Multiplication & Division", url: "https://bfugitt.github.io/fractionmultdiv/", desc: "Practice and visualize multiplication and division of fractions." },
-                    { name: "Fraction Cards", url: "https://bfugitt.github.io/fractioncards/", desc: "Find that cards that match the rule" },
-
-                    { name: "Fast Facts", url: "https://bfugitt.github.io/fastfacts/", desc: "Practice all four math operations" },
-                    { name: "Math Cards", url: "https://bfugitt.github.io/mathcards/", desc: "Memory card game with math facts" },
-                    { name: "Long Division", url: "https://bfugitt.github.io/division/", desc: "Step-by-step long division practice" },
-                    { name: "Multiplication", url: "https://bfugitt.github.io/multiplication/", desc: "Multi-digit multiplication practice" },
-                    { name: "Points and Lines", url: "https://bfugitt.github.io/rene/", desc: "Coordinate graphing practice" },
-                    { name: "Math Muncher", url: "https://bfugitt.github.io/munchers/", desc: "Pac-Man style factors game" },
-                    { name: "Math Diver", url: "https://bfugitt.github.io/mathdiver/", desc: "Catch falling factors" },
-                    { name: "Factor Factory", url: "https://bfugitt.github.io/factorfactory/", desc: "Game-based factor practice" },
-                    { name: "Factor Garden", url: "https://bfugitt.github.io/factorgarden", desc: "Collection of factor games" },
-                    { name: "Primary Facts", url: "https://bfugitt.github.io/student-pages/primary_facts_v4.html", desc: "Addition and subtraction drills" },
-                    { name: "Elementary Facts", url: "https://bfugitt.github.io/student-pages/elementary_facts_v2.html", desc: "All four operations practice" },
-                    { name: "Mastery Practice", url: "https://bfugitt.github.io/student-pages/facts_master_v6.html", desc: "Grade level facts with certificates" },
-                    { name: "Math Facts Duel", url: "https://bfugitt.github.io/student-pages/facts_battle_v4.html", desc: "Two player math facts game" },
-                    { name: "System 6 Math", url: "https://bfugitt.github.io/student-pages/system6_math.html", desc: "Adaptive learning math facts" }
+                    { name: "Visual Fractions", url: "https://bfugitt.github.io/visualfractions/", desc: "Match the picture blocks to their correct fraction families." },
+                    { name: "Fraction Tiles", url: "https://bfugitt.github.io/fractiontiles/", desc: "Use colorful tiles to build, mix, and compare different fractions." },
+                    { name: "Number Line Fractions", url: "https://bfugitt.github.io/numberlinefractions/", desc: "Can you figure out where each fraction lives on the number line?" },
+                    { name: "Fraction Garden", url: "https://bfugitt.github.io/fractiongarden/", desc: "Explore the garden and learn the secrets of working with fractions." },
+                    { name: "Fraction Farm", url: "https://bfugitt.github.io/fractionfarm/", desc: "Plant and harvest your way to becoming a fraction master!" },
+                    { name: "Fraction Cards", url: "https://bfugitt.github.io/fractioncards/", desc: "Play a fun card game by finding the fractions that match the hidden rules." },
+                    { name: "Fraction Munchers", url: "https://bfugitt.github.io/fractionmuncher/", desc: "Chomp through the grid to eat only the right fractions!" },
+                    { name: "Fraction Garden: Mult & Div", url: "https://bfugitt.github.io/fractionmultdiv/", desc: "See how multiplying and dividing fractions makes your garden grow!" }
                 ]
             },
-            "Music & Audio": {
-                icon: "🎵",
-                color: "bg-purple-50 border-purple-100",
+            "Math: Practice": {
+                icon: "🧮",
+                color: "bg-indigo-100 text-indigo-800 border-indigo-200",
+                bgColor: "bg-indigo-50",
                 items: [
-                    { name: "Sound Garden", url: "https://bfugitt.github.io/kidsynth", desc: "Synthesizer with visual sequencer" },
-                    { name: "Music Theory", url: "https://bfugitt.github.io/musictheory", desc: "Practice music theory" },
-
-                    { name: "Volca", url: "https://bfugitt.github.io/volca", desc: "Plug in the Volca Sample" },
-                    { name: "Jt4000", url: "https://bfugitt.github.io/jt4000", desc: "Plug in the JT400" },
-                    { name: "ProVSmini", url: "https://bfugitt.github.io/provsmini", desc: "Plug in the ProVsmini" },
-                    { name: "Poly D", url: "https://bfugitt.github.io/polyd", desc: "Plug in the Poly D" },
-                    { name: "WebSynth", url: "https://bfugitt.github.io/web-synth", desc: "Advanced audio synthesizer" },
-                    { name: "MIDI Sequencer", url: "https://bfugitt.github.io/midiseq", desc: "Connect to hardware synthesizers" },
-                    { name: "Songer", url: "https://bfugitt.github.io/songer/", desc: "Chord progression player with drums" },
-                    { name: "Guitar Chord Practice Assistant", url: "https://bfugitt.github.io/guitar/", desc: "Chord transition practice" },
-                    { name: "Guitar Notes", url: "https://bfugitt.github.io/guitarnotes/", desc: "Memorize the note names and fret positions" },
-                    { name: "Guitar Theory", url: "https://bfugitt.github.io/guitartheory/", desc: "Notation and tablature instruction" },
-                    { name: "Guitar Theory 2", url: "https://bfugitt.github.io/guitartheory/gt2.html", desc: "Updated guitar theory" }
+                    { name: "Primary Facts", url: "https://bfugitt.github.io/student-pages/primary_facts_v4.html", desc: "Brush up on your quick addition and subtraction skills." },
+                    { name: "Elementary Facts", url: "https://bfugitt.github.io/student-pages/elementary_facts_v2.html", desc: "Train your brain with addition, subtraction, multiplication, and division." },
+                    { name: "Mastery Practice", url: "https://bfugitt.github.io/student-pages/facts_master_v6.html", desc: "Prove you're a math genius and earn your certificates!" },
+                    { name: "System 6 Math", url: "https://bfugitt.github.io/student-pages/system6_math.html", desc: "A smart math system that learns with you and helps you level up." },
+                    { name: "Fast Facts", url: "https://bfugitt.github.io/fastfacts/", desc: "Race against the clock to solve math problems as fast as you can!" },
+                    { name: "Math Cards", url: "https://bfugitt.github.io/mathcards/", desc: "Test your memory and math skills in this classic matching game." },
+                    { name: "Math Facts Duel", url: "https://bfugitt.github.io/student-pages/facts_battle_v4.html", desc: "Grab a friend and battle it out to see who is the fastest calculator!" },
+                    { name: "Multiplication", url: "https://bfugitt.github.io/multiplication/", desc: "Level up your skills with big multi-digit multiplication challenges." },
+                    { name: "Long Division", url: "https://bfugitt.github.io/division/", desc: "Master the steps of long division without getting stuck!" },
+                    { name: "Factor Garden", url: "https://bfugitt.github.io/factorgarden", desc: "A whole collection of mini-games to make you a factor expert." },
+                    { name: "Factor Factory", url: "https://bfugitt.github.io/factorfactory/", desc: "Keep the factory running by sorting numbers into their correct factors." },
+                    { name: "Math Muncher", url: "https://bfugitt.github.io/munchers/", desc: "Waka-waka! Eat the right numbers and avoid the math ghosts!" },
+                    { name: "Math Diver", url: "https://bfugitt.github.io/mathdiver/", desc: "Dive deep into the ocean to catch the falling math factors." },
+                    { name: "Points and Lines", url: "https://bfugitt.github.io/rene/", desc: "Plot points on a map to draw cool shapes and lines." }
                 ]
             },
             "Language Arts": {
                 icon: "📚",
-                color: "bg-yellow-50 border-yellow-100",
+                color: "bg-yellow-100 text-yellow-800 border-yellow-200",
+                bgColor: "bg-yellow-50",
                 items: [
-                    { name: "Typing Garden", url: "https://bfugitt.github.io/gardentype/", desc: "A relaxing typing practice" },
-                    { name: "ValenTyping Garden", url: "https://bfugitt.github.io/gardentype/valentype", desc: "Valentines Typing" },
-
-                    { name: "Word Garden", url: "https://bfugitt.github.io/wordgarden/", desc: "Dictionary with vocabulary games" },
-                    { name: "Vocabulary", url: "https://bfugitt.github.io/macvocab/", desc: "Fourth-grade vocabulary practice" },
-                    { name: "Morphology Mech", url: "https://bfugitt.github.io/morphology/", desc: "Work with roots, prefixes and suffixes" },
-                    { name: "Word Weaver", url: "https://bfugitt.github.io/cloze/", desc: "Fill in the blank reading comprehension practice" },
-                    { name: "Reading Assessments", url: "https://bfugitt.github.io/dibels/", desc: "Benchmark reading comprehension assessments" },
-
-                    
-                    { name: "Vocabulary Garden", url: "https://bfugitt.github.io/vocabgarden/", desc: "Enhanced vocabulary practice" },
-                    { name: "MacType", url: "https://bfugitt.github.io/mactype/", desc: "Keyboarding skills practice" },
-                    { name: "BibleType", url: "https://bfugitt.github.io/bibletype/", desc: "Typing with biblical vocabulary" },
-                    { name: "Latin Roots", url: "https://bfugitt.github.io/maclatin/", desc: "Latin vocabulary and root words" },
-                    { name: "Magister", url: "https://bfugitt.github.io/magister/", desc: "Advanced Latin conjugations" }
+                    { name: "Word Weaver", url: "https://bfugitt.github.io/cloze/", desc: "Read the story and weave the missing words back into the blank spaces." },
+                    { name: "Vocabulary", url: "https://bfugitt.github.io/macvocab/", desc: "Master the most important words for 4th-grade readers and writers!" },
+                    { name: "Vocabulary Garden", url: "https://bfugitt.github.io/vocabgarden/", desc: "An extra-fun garden where you can harvest big, juicy vocabulary words." },
+                    { name: "Word Garden", url: "https://bfugitt.github.io/wordgarden/", desc: "Grow your vocabulary by playing fun dictionary mini-games." },
+                    { name: "Morphology Mech", url: "https://bfugitt.github.io/morphology/", desc: "Build giant word-robots using roots, prefixes, and suffixes!" },
+                    { name: "Latin Roots", url: "https://bfugitt.github.io/maclatin/", desc: "Unlock the ancient Latin secrets hiding inside English words." },
+                    { name: "Magister", url: "https://bfugitt.github.io/magister/", desc: "Challenge yourself by learning how ancient Romans changed their verbs." },
+                    { name: "Reading Assessments", url: "https://bfugitt.github.io/dibels/", desc: "Test your reading skills and see how much you've grown." },
+                    { name: "MacType", url: "https://bfugitt.github.io/mactype/", desc: "Train your fingers to fly across the keyboard without looking!" },
+                    { name: "Typing Garden", url: "https://bfugitt.github.io/gardentype/", desc: "Plant words as you type and watch your typing speed blossom!" },
+                    { name: "BibleType", url: "https://bfugitt.github.io/bibletype/", desc: "Practice your typing while learning words from the Bible." },
+                    { name: "ValenTyping Garden", url: "https://bfugitt.github.io/gardentype/valentype", desc: "Type sweet messages in this special Valentine's Day typing game." }
                 ]
             },
-            "Social Studies & Science": {
+            "History & Sci": {
                 icon: "🌍",
-                color: "bg-green-50 border-green-100",
+                color: "bg-green-100 text-green-800 border-green-200",
+                bgColor: "bg-green-50",
                 items: [
-                    { name: "Science: Animals", url: "https://bfugitt.github.io/decat/", desc: "Learn and study about animals." },
-                    { name: "Vision Simulator", url: "https://bfugitt.github.io/visionsim/", desc: "Simulate and explore animal vision." },
-
-                    { name: "States Map", url: "https://bfugitt.github.io/states/", desc: "U.S. states and capitals practice" },
-                    { name: "World Map", url: "https://bfugitt.github.io/world/", desc: "Global geography practice" },
-                    { name: "Zookeeper", url: "https://bfugitt.github.io/rogue/zookeeper1", desc: "Get the animals to the zoo!" },
-                    { name: "Valentine Maze", url: "https://bfugitt.github.io/rogue/valentinerogue", desc: "Get the treats!" },
-
-                    { name: "Royal Families", url: "https://bfugitt.github.io/learnit/?mod=royals.json", desc: "European royal families quiz" },
-                    { name: "Mission Trail Game", url: "https://bfugitt.github.io/rogue/calirogue", desc: "Mission trail silly game" },
-                    { name: "Telegraph", url: "https://bfugitt.github.io/telegraph", desc: "Learn Morse code and practice your telegraph skills" },
-
-                    
-                    { name: "El Camino Real", url: "https://bfugitt.github.io/elcaminoreal/", desc: "California mission history adventure" },
-                    { name: "Rancho Tycoon", url: "https://bfugitt.github.io/rancho/", desc: "Raise cattle and trade in Alta California" },
-
-                     
-                    { name: "Mission Builder", url: "https://bfugitt.github.io/missionbuilder", desc: "Design California missions" }
+                    { name: "El Camino Real", url: "https://bfugitt.github.io/elcaminoreal/", desc: "Step back in time and explore the famous California mission road." },
+                    { name: "Mission Builder", url: "https://bfugitt.github.io/missionbuilder", desc: "Be the architect and build your very own historic California mission." },
+                    { name: "Rancho Tycoon", url: "https://bfugitt.github.io/rancho/", desc: "Run your own cattle ranch and become a rich trader in old California!" },
+                    { name: "Mission Trail Game", url: "https://bfugitt.github.io/rogue/calirogue", desc: "Go on a silly, fun adventure along the historic California Mission trail." },
+                    { name: "States Map", url: "https://bfugitt.github.io/states/", desc: "Can you drag and drop all 50 states and their capitals to the right spot?" },
+                    { name: "World Map", url: "https://bfugitt.github.io/world/", desc: "Travel the globe and test your knowledge of countries around the world." },
+                    { name: "Royal Families", url: "https://bfugitt.github.io/learnit/?mod=royals.json", desc: "Test your knowledge of kings, queens, and European history." },
+                    { name: "Science: Animals", url: "https://bfugitt.github.io/decat/", desc: "Discover amazing facts and study the wildest creatures on Earth!" },
+                    { name: "Vision Simulator", url: "https://bfugitt.github.io/visionsim/", desc: "See the world through the eyes of different bugs, birds, and beasts!" },
+                    { name: "Zookeeper", url: "https://bfugitt.github.io/rogue/zookeeper1", desc: "Solve puzzles to safely guide the wandering animals back to their zoo habitats." },
+                    { name: "Valentine Maze", url: "https://bfugitt.github.io/rogue/valentinerogue", desc: "Navigate the tricky maze to collect all the Valentine's Day treats." }
+                ]
+            },
+            "Music & Audio": {
+                icon: "🎵",
+                color: "bg-purple-100 text-purple-800 border-purple-200",
+                bgColor: "bg-purple-50",
+                items: [
+                    { name: "Music Theory", url: "https://bfugitt.github.io/musictheory", desc: "Learn the secret language of music and how to read notes." },
+                    { name: "Guitar Notes", url: "https://bfugitt.github.io/guitarnotes/", desc: "Learn exactly where every note lives on the guitar fretboard." },
+                    { name: "Guitar Chord Practice", url: "https://bfugitt.github.io/guitar/", desc: "Train your fingers to switch between guitar chords smoothly." },
+                    { name: "Guitar Theory", url: "https://bfugitt.github.io/guitartheory/", desc: "Learn how to read guitar tabs and sheet music like a pro." },
+                    { name: "Guitar Theory 2", url: "https://bfugitt.github.io/guitartheory/gt2.html", desc: "Take your guitar reading skills to the next level." },
+                    { name: "Sound Garden", url: "https://bfugitt.github.io/kidsynth", desc: "Create your own blooming beats using this colorful visual music maker!" },
+                    { name: "Songer", url: "https://bfugitt.github.io/songer/", desc: "Build your own songs quickly by mixing chords and drum beats." },
+                    { name: "Volca", url: "https://bfugitt.github.io/volca", desc: "Connect and play with real electronic drum beats and samples." },
+                    { name: "Jt4000", url: "https://bfugitt.github.io/jt4000", desc: "Make wild, futuristic sounds with this digital synthesizer." },
+                    { name: "ProVSmini", url: "https://bfugitt.github.io/provsmini", desc: "Mix and morph different sounds together to create new music." },
+                    { name: "Poly D", url: "https://bfugitt.github.io/polyd", desc: "Play huge, classic synthesizer sounds with this electronic keyboard." },
+                    { name: "WebSynth", url: "https://bfugitt.github.io/web-synth", desc: "Turn your computer into a massive electronic music machine!" },
+                    { name: "MIDI Sequencer", url: "https://bfugitt.github.io/midiseq", desc: "Be the conductor and make all your musical instruments play together." }
                 ]
             },
             "Creative Tools": {
                 icon: "🎨",
-                color: "bg-red-50 border-red-100",
+                color: "bg-red-100 text-red-800 border-red-200",
+                bgColor: "bg-red-50",
                 items: [
-                    { name: "Stamp Studio", url: "https://bfugitt.github.io/stampstudio/", desc: "Design your own stamps!" },
-                    { name: "PixArt Studio", url: "https://bfugitt.github.io/pixart/", desc: "Pixel art and animation" },
-                    { name: "VectorArt", url: "https://bfugitt.github.io/vectorpaint/", desc: "Vector drawing and animation" },
-                    { name: "Reggio Animation", url: "https://bfugitt.github.io/regart/", desc: "Reggio-inspired art and animation" }
+                    { name: "Stamp Studio", url: "https://bfugitt.github.io/stampstudio/", desc: "Draw, carve, and print your own custom digital art stamps!" },
+                    { name: "PixArt Studio", url: "https://bfugitt.github.io/pixart/", desc: "Create retro video-game-style art and make your own animations." },
+                    { name: "VectorArt", url: "https://bfugitt.github.io/vectorpaint/", desc: "Draw smooth, perfect shapes and bring them to life with motion." },
+                    { name: "Reggio Animation", url: "https://bfugitt.github.io/regart/", desc: "Use natural materials and simple shapes to create beautiful, moving art." }
                 ]
             },
             "Logic & Puzzles": {
                 icon: "🧩",
-                color: "bg-orange-50 border-orange-100",
+                color: "bg-orange-100 text-orange-800 border-orange-200",
+                bgColor: "bg-orange-50",
                 items: [
-                    { name: "Saints Journey", url: "https://bfugitt.github.io/rogue/saintrogue", desc: "Silly saints crawler" },
-                    { name: "Community Garden", url: "https://bfugitt.github.io/rogue/gardenrogue", desc: "Silly garden crawler" },
-                    { name: "Logic", url: "https://bfugitt.github.io/logic/", desc: "Logical reasoning puzzles" },
-                    { name: "Game of Life", url: "https://bfugitt.github.io/conway/", desc: "Conway's cellular automaton" },
-                    { name: "Backgammon", url: "https://bfugitt.github.io/backgammon/", desc: "Learn to play Backgammon" },
-                    { name: "Crypto", url: "https://bfugitt.github.io/crypto/", desc: "Learn about codes and ciphers.  Make secret messages and decode them." },
-
-                    { name: "Vector Life", url: "https://bfugitt.github.io/vectorlife/", desc: "Game of Life with retro graphics" }
+                    { name: "Logic", url: "https://bfugitt.github.io/logic/", desc: "Give your brain a serious workout with these tricky logic puzzles." },
+                    { name: "Crypto", url: "https://bfugitt.github.io/crypto/", desc: "Become a secret agent and learn how to write and crack hidden codes!" },
+                    { name: "Backgammon", url: "https://bfugitt.github.io/backgammon/", desc: "Learn the rules and strategy of one of the oldest board games in the world." },
+                    { name: "Saints Journey", url: "https://bfugitt.github.io/rogue/saintrogue", desc: "Go on a goofy, puzzle-filled adventure with historic saints." },
+                    { name: "Community Garden", url: "https://bfugitt.github.io/rogue/gardenrogue", desc: "Crawl through the community garden and solve wacky puzzles!" },
+                    { name: "Game of Life", url: "https://bfugitt.github.io/conway/", desc: "Watch how simple little digital cells grow, live, and change patterns." },
+                    { name: "Vector Life", url: "https://bfugitt.github.io/vectorlife/", desc: "Play with digital cell patterns in a cool, old-school glowing style." }
                 ]
             },
-            "Communication": {
+            "Connect & Tools": {
                 icon: "💬",
-                color: "bg-teal-50 border-teal-100",
+                color: "bg-teal-100 text-teal-800 border-teal-200",
+                bgColor: "bg-teal-50",
                 items: [
-                    { name: "Telegraph", url: "https://bfugitt.github.io/telegraph", desc: "Learn Morse code and practice your telegraph skills" },
-
-                    { name: "Joli Chat", url: "https://bfugitt.github.io/jolichat/", desc: "Safe student chat room" }
-                ]
-            },
-             "Multi-Purpose": {
-                icon: "🎯",
-                color: "bg-gray-50 border-gray-200",
-                items: [
-                    { name: "LearnIt", url: "https://bfugitt.github.io/learnit/", desc: "Flexible learning module platform" }
+                    { name: "Joli Chat", url: "https://bfugitt.github.io/jolichat/", desc: "A safe and fun place to chat and share ideas with your classmates." },
+                    { name: "Telegraph", url: "https://bfugitt.github.io/telegraph", desc: "Tap out secret messages using dots and dashes like they did in the old days!" },
+                    { name: "LearnIt", url: "https://bfugitt.github.io/learnit/", desc: "Your super-hub for custom lessons and extra practice modules!" }
                 ]
             }
         };
@@ -364,27 +362,28 @@
         let state = {
             favorites: [],
             visited: [],
-            expanded: [] // New: Tracks which categories are open
+            activeCategory: 'Favorites', // 'Favorites' or a Category Name, or 'Search'
+            searchQuery: ''
         };
 
-        // Load data from LocalStorage
         function loadState() {
             const saved = localStorage.getItem('gardenState');
             if (saved) {
                 const parsed = JSON.parse(saved);
                 state.favorites = parsed.favorites || [];
                 state.visited = parsed.visited || [];
-                // We don't save expanded state to local storage, so it resets on refresh
+            }
+            
+            // Default to Math: Fractions if no favorites exist to avoid blank screen
+            if (state.favorites.length === 0) {
+                state.activeCategory = "Math: Fractions";
+            } else {
+                state.activeCategory = "Favorites";
             }
         }
 
-        // Save data to LocalStorage
         function saveState() {
-            // We only save favorites and visited, not the UI expansion state
-            const toSave = {
-                favorites: state.favorites,
-                visited: state.visited
-            };
+            const toSave = { favorites: state.favorites, visited: state.visited };
             localStorage.setItem('gardenState', JSON.stringify(toSave));
             updateStats();
         }
@@ -397,19 +396,26 @@
                 state.favorites.push(appName);
             } else {
                 state.favorites.splice(index, 1);
+                // If we are currently ON the favorites tab and we remove the last one, jump to Math
+                if (state.activeCategory === 'Favorites' && state.favorites.length === 0) {
+                    state.activeCategory = "Math: Fractions";
+                }
             }
             saveState();
-            render(); 
+            
+            // Re-render UI. Only re-render full tabs if favorites empty state changed.
+            renderTabs();
+            renderActivePlot(); 
         }
 
-        function toggleCategory(catName) {
-            const index = state.expanded.indexOf(catName);
-            if (index === -1) {
-                state.expanded.push(catName);
-            } else {
-                state.expanded.splice(index, 1);
-            }
-            render();
+        function setCategory(catName) {
+            state.activeCategory = catName;
+            state.searchQuery = ''; // Clear search when changing tabs
+            document.getElementById('searchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            
+            renderTabs();
+            renderActivePlot();
         }
 
         function trackVisit(appName, url) {
@@ -424,26 +430,35 @@
             if(confirm("Are you sure you want to reset all progress and favorites?")) {
                 state.favorites = [];
                 state.visited = [];
-                // keep expanded state as is
+                state.activeCategory = "Math: Fractions";
                 saveState();
                 toggleModal('settingsModal');
-                render();
+                renderTabs();
+                renderActivePlot();
             }
+        }
+
+        function handleSearch(query) {
+            state.searchQuery = query.trim().toLowerCase();
+            if (state.searchQuery) {
+                state.activeCategory = 'Search';
+            } else {
+                // If search is cleared, go back to previously active or Math
+                state.activeCategory = state.favorites.length > 0 ? 'Favorites' : 'Math: Fractions';
+            }
+            renderTabs();
+            renderActivePlot();
         }
 
         function clearSearch() {
             document.getElementById('searchInput').value = '';
             document.getElementById('mobileSearchInput').value = '';
-            searchApps('');
+            handleSearch('');
         }
 
         function toggleModal(modalId) {
             const modal = document.getElementById(modalId);
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
+            modal.classList.toggle('hidden');
         }
 
         // --- RENDER FUNCTIONS ---
@@ -452,12 +467,9 @@
             const count = state.visited.length;
             const favCount = state.favorites.length;
             
-            // Determine Level
             let currentLevel = CONFIG.levels[0];
             for (let level of CONFIG.levels) {
-                if (count >= level.count) {
-                    currentLevel = level;
-                }
+                if (count >= level.count) currentLevel = level;
             }
 
             document.getElementById('visitCount').textContent = count;
@@ -466,174 +478,181 @@
             document.getElementById('levelIcon').textContent = currentLevel.icon;
         }
 
-        function createCard(app) {
+        function createCard(app, highlightTerm = '') {
             const isFav = state.favorites.includes(app.name);
             const isVisited = state.visited.includes(app.name);
             
-            const heartClass = isFav ? "text-red-500 scale-110" : "text-gray-300 hover:text-red-300";
+            const heartClass = isFav ? "text-red-500 scale-110 opacity-100" : "text-gray-300 opacity-50 group-hover:opacity-100 hover:text-red-400";
             const heartFill = isFav ? "❤️" : "🤍";
-            const visitedBadge = isVisited ? `<span class="absolute top-2 left-2 text-xs bg-green-100 text-green-800 px-1.5 rounded-md opacity-80" title="Visited">✓</span>` : '';
+            const visitedBadge = isVisited ? `<span class="absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider bg-garden-green text-white px-2 py-0.5 rounded-full shadow-sm z-10">Explored ✓</span>` : '';
+
+            // Optional: Find which category this app belongs to for the accent color
+            let parentCatColor = "from-garden-light-green to-garden-green";
+            for(let cat in appsData) {
+                if(appsData[cat].items.find(i => i.name === app.name)) {
+                    // Extract basic tailwind color keyword (e.g., 'blue', 'red') from bg-blue-50
+                    const match = appsData[cat].bgColor.match(/bg-([a-z]+)-/);
+                    if(match) parentCatColor = `from-${match[1]}-300 to-${match[1]}-500`;
+                }
+            }
 
             return `
-                <div class="app-card relative bg-white rounded-xl border border-stone-100 p-4 flex flex-col h-full cursor-pointer group" onclick="if(!event.target.closest('.fav-btn')) trackVisit('${app.name}', '${app.url}')">
+                <div class="app-card relative bg-white rounded-2xl border-2 border-garden-sage/30 p-5 flex flex-col h-full cursor-pointer group shadow-sm overflow-hidden" onclick="if(!event.target.closest('.fav-btn')) trackVisit('${app.name}', '${app.url}')">
                     ${visitedBadge}
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-bold text-gray-800 group-hover:text-garden-green transition-colors pr-6">${app.name}</h3>
-                        <button class="fav-btn absolute top-3 right-3 text-xl transition-transform active:scale-90 ${heartClass}" 
+                    
+                    <!-- Decorative background blob -->
+                    <div class="absolute -right-6 -top-6 w-24 h-24 bg-gradient-to-br ${parentCatColor} opacity-5 rounded-full blur-2xl transition-opacity group-hover:opacity-15"></div>
+
+                    <div class="flex justify-between items-start mb-3 pt-4">
+                        <h3 class="font-bold text-gray-800 text-lg group-hover:text-garden-green transition-colors pr-8 leading-tight">${app.name}</h3>
+                        <button class="fav-btn absolute top-4 right-4 text-2xl transition-all active:scale-90 ${heartClass}" 
                                 onclick="toggleFavorite('${app.name}')" title="${isFav ? 'Remove Favorite' : 'Add Favorite'}">
                             ${heartFill}
                         </button>
                     </div>
-                    <p class="text-sm text-gray-500 leading-snug">${app.desc}</p>
-                    <div class="mt-auto pt-3">
-                        <div class="h-1 w-0 group-hover:w-full bg-gradient-to-r from-garden-light-green to-garden-green transition-all duration-500 rounded-full"></div>
+                    <p class="text-sm text-gray-500 leading-relaxed">${app.desc}</p>
+                    
+                    <div class="mt-auto pt-5">
+                        <div class="h-1.5 w-12 bg-gray-200 group-hover:w-full bg-gradient-to-r ${parentCatColor} transition-all duration-300 rounded-full"></div>
                     </div>
                 </div>
             `;
         }
 
-        function render() {
-            const categoriesContainer = document.getElementById('categoriesContainer');
-            const favoritesContainer = document.getElementById('favoritesSection');
-            const favoritesGrid = document.getElementById('favoritesGrid');
-            
-            categoriesContainer.innerHTML = '';
-            favoritesGrid.innerHTML = '';
-            
-            let hasFavorites = false;
+        function renderTabs() {
+            const tabsContainer = document.getElementById('categoryTabs');
+            tabsContainer.innerHTML = '';
 
-            // Render all categories
-            Object.entries(appsData).forEach(([catName, catData]) => {
-                const isExpanded = state.expanded.includes(catName);
+            // Helper to create a tab
+            const createTab = (id, icon, label, defaultColors, activeColors) => {
+                const isActive = state.activeCategory === id;
+                const baseClasses = "garden-tab flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm whitespace-nowrap cursor-pointer border-2 snap-start ";
+                const colorClasses = isActive ? activeColors : defaultColors;
                 
-                // Build Section Wrapper
-                const catSection = document.createElement('div');
-                catSection.className = `category-section fade-in bg-white rounded-2xl border border-stone-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow`;
-                catSection.dataset.category = catName.toLowerCase();
-                
-                // Header (Clickable)
-                const headerHtml = `
-                    <button onclick="toggleCategory('${catName}')" class="w-full flex items-center justify-between p-4 bg-white hover:bg-garden-cream/50 transition-colors focus:outline-none">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full ${catData.color} flex items-center justify-center text-xl shadow-sm">
-                                ${catData.icon}
-                            </div>
-                            <h2 class="font-serif text-xl font-bold text-gray-700">${catName}</h2>
-                        </div>
-                        <span class="chevron text-gray-400 text-xl ${isExpanded ? 'rotate-180' : ''}">▼</span>
+                return `
+                    <button onclick="setCategory('${id}')" class="${baseClasses} ${colorClasses}">
+                        <span class="text-xl">${icon}</span> ${label}
                     </button>
                 `;
+            };
 
-                // Grid Container
-                const gridContainerClass = isExpanded ? "block" : "hidden";
-                const gridHtml = `
-                    <div class="apps-grid bg-garden-cream/30 p-4 border-t border-stone-100 ${gridContainerClass}">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                            ${catData.items.map(app => createCard(app)).join('')}
-                        </div>
-                    </div>
-                `;
-
-                catSection.innerHTML = headerHtml + gridHtml;
-                categoriesContainer.appendChild(catSection);
-
-                // Add to favorites (this part is just data processing for the fav section)
-                catData.items.forEach(app => {
-                    if (state.favorites.includes(app.name)) {
-                        favoritesGrid.innerHTML += createCard(app);
-                        hasFavorites = true;
-                    }
-                });
-            });
-
-            // Toggle Favorites Section
-            if (hasFavorites) {
-                favoritesContainer.classList.remove('hidden');
-            } else {
-                favoritesContainer.classList.add('hidden');
+            // 1. Favorites Tab (only if they have favorites)
+            if (state.favorites.length > 0) {
+                tabsContainer.innerHTML += createTab(
+                    'Favorites', '❤️', 'My Plot', 
+                    'bg-white text-gray-600 border-gray-200 hover:border-red-200 hover:bg-red-50', 
+                    'bg-red-100 text-red-800 border-red-300 shadow-inner'
+                );
             }
-            
-            updateStats();
+
+            // 2. All other categories
+            Object.entries(appsData).forEach(([catName, data]) => {
+                tabsContainer.innerHTML += createTab(
+                    catName, data.icon, catName,
+                    'bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-gray-300',
+                    data.color + ' shadow-inner'
+                );
+            });
         }
 
-        function searchApps(query) {
-            const term = query.toLowerCase().trim();
-            const allSections = document.querySelectorAll('.category-section');
-            let totalFound = 0;
+        function renderActivePlot() {
+            const grid = document.getElementById('appsGrid');
+            const noResults = document.getElementById('noResults');
+            const header = document.getElementById('currentPlotHeader');
+            const plotTitle = document.getElementById('plotTitle');
+            const plotIcon = document.getElementById('plotIcon');
+            
+            grid.innerHTML = '';
+            
+            // Re-trigger animation
+            grid.classList.remove('fade-in');
+            void grid.offsetWidth; // trigger reflow
+            grid.classList.add('fade-in');
 
-            allSections.forEach(section => {
-                const sectionName = section.dataset.category;
-                const cards = section.querySelectorAll('.app-card');
-                const grid = section.querySelector('.apps-grid');
-                const chevron = section.querySelector('.chevron');
-                
-                let sectionHasMatch = false;
+            // --- SEARCH MODE ---
+            if (state.activeCategory === 'Search') {
+                let matchCount = 0;
+                header.classList.remove('hidden');
+                plotIcon.className = "w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-sm bg-yellow-100 border border-yellow-200";
+                plotIcon.innerHTML = "🔍";
+                plotTitle.textContent = "Search Results";
 
-                cards.forEach(card => {
-                    const title = card.querySelector('h3').textContent.toLowerCase();
-                    const desc = card.querySelector('p').textContent.toLowerCase();
-                    
-                    if (title.includes(term) || desc.includes(term)) {
-                        card.classList.remove('hidden');
-                        sectionHasMatch = true;
-                        totalFound++;
-                    } else {
-                        card.classList.add('hidden');
-                    }
+                Object.values(appsData).forEach(cat => {
+                    cat.items.forEach(app => {
+                        if (app.name.toLowerCase().includes(state.searchQuery) || app.desc.toLowerCase().includes(state.searchQuery)) {
+                            grid.innerHTML += createCard(app);
+                            matchCount++;
+                        }
+                    });
                 });
 
-                if (term === '') {
-                    // Reset to state-based view if search cleared
-                    section.classList.remove('hidden');
-                    cards.forEach(c => c.classList.remove('hidden'));
-                    const catName = section.querySelector('h2').textContent;
-                    const shouldBeExpanded = state.expanded.includes(catName);
-                    
-                    if(shouldBeExpanded) {
-                        grid.classList.remove('hidden');
-                        chevron.classList.add('rotate-180');
-                    } else {
-                        grid.classList.add('hidden');
-                        chevron.classList.remove('rotate-180');
-                    }
-                } else if (sectionHasMatch) {
-                    // Force expand on search match
-                    section.classList.remove('hidden');
-                    grid.classList.remove('hidden');
-                    chevron.classList.add('rotate-180');
+                if (matchCount === 0) {
+                    noResults.classList.remove('hidden');
+                    grid.classList.add('hidden');
                 } else {
-                    section.classList.add('hidden');
+                    noResults.classList.add('hidden');
+                    grid.classList.remove('hidden');
                 }
-            });
+                return;
+            }
 
-            const noResults = document.getElementById('noResults');
-            const favoritesSection = document.getElementById('favoritesSection');
-            
-            if (totalFound === 0 && term !== '') {
-                noResults.classList.remove('hidden');
-                favoritesSection.classList.add('hidden');
-            } else {
-                noResults.classList.add('hidden');
-                if (term === '' && state.favorites.length > 0) {
-                    favoritesSection.classList.remove('hidden');
-                }
+            // --- NORMAL MODE ---
+            noResults.classList.add('hidden');
+            grid.classList.remove('hidden');
+            header.classList.remove('hidden');
+
+            if (state.activeCategory === 'Favorites') {
+                plotIcon.className = "w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-sm bg-red-100 border border-red-200";
+                plotIcon.innerHTML = "❤️";
+                plotTitle.textContent = "My Favorites Plot";
+                
+                // Gather all apps that are favorites
+                let allFavs = [];
+                Object.values(appsData).forEach(cat => {
+                    cat.items.forEach(app => {
+                        if (state.favorites.includes(app.name)) {
+                            allFavs.push(app);
+                        }
+                    });
+                });
+
+                allFavs.forEach(app => {
+                    grid.innerHTML += createCard(app);
+                });
+
+            } else if (appsData[state.activeCategory]) {
+                const catData = appsData[state.activeCategory];
+                
+                plotIcon.className = `w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-sm ${catData.bgColor} border border-white`;
+                plotIcon.innerHTML = catData.icon;
+                plotTitle.textContent = state.activeCategory;
+
+                catData.items.forEach(app => {
+                    grid.innerHTML += createCard(app);
+                });
             }
         }
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
             loadState();
-            
-            // Optional: Uncomment this line if you want the first category (Mathematics) open by default
-            // state.expanded.push("Mathematics");
-            
-            render();
+            renderTabs();
+            renderActivePlot();
+            updateStats();
             document.getElementById('aboutText').innerHTML = CONFIG.aboutContent;
 
             // Search Listeners
-            const searchFn = (e) => searchApps(e.target.value);
-            document.getElementById('searchInput').addEventListener('input', searchFn);
-            document.getElementById('mobileSearchInput').addEventListener('input', searchFn);
+            const searchInput = document.getElementById('searchInput');
+            const mobileSearchInput = document.getElementById('mobileSearchInput');
+            
+            const handleInput = (e) => handleSearch(e.target.value);
+            
+            searchInput.addEventListener('input', handleInput);
+            mobileSearchInput.addEventListener('input', handleInput);
+            
+            // Sync the two search bars
+            searchInput.addEventListener('keyup', (e) => { mobileSearchInput.value = e.target.value; });
+            mobileSearchInput.addEventListener('keyup', (e) => { searchInput.value = e.target.value; });
         });
 
     </script>
