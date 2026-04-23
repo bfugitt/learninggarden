@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Learning Garden</title>
     
-    <!-- Tailwind CSS for styling -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Google Fonts: Lora (Serif) for headings, Nunito (Sans) for text -->
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Configuration for Tailwind to use our custom fonts and colors -->
+    <!-- Lucide Icons (Replaces emojis with clean, retro line-art) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Configuration for Retro/Organic Theme -->
     <script>
         tailwind.config = {
             theme: {
@@ -21,12 +24,18 @@
                         serif: ['Lora', 'serif'],
                     },
                     colors: {
-                        'garden-cream': '#FDFBF7',
-                        'garden-green': '#4A6741',
-                        'garden-light-green': '#8FBC8F',
-                        'garden-sage': '#C4D7C4',
-                        'garden-dirt': '#8B5E3C',
-                        'garden-clay': '#D29C78',
+                        'garden-paper': '#f4f1ea',  /* Warm cream background */
+                        'garden-ink': '#2c3539',    /* Soft charcoal/slate black for text/borders */
+                        'garden-sage': '#8bb28b',   /* Muted green */
+                        'garden-clay': '#e07a5f',   /* Muted terracotta */
+                        'garden-mustard': '#e8c366',/* Muted yellow */
+                        'garden-lake': '#7ba3b5',   /* Muted blue */
+                        'garden-lavender':'#b29fce',/* Muted purple */
+                    },
+                    boxShadow: {
+                        'retro': '4px 4px 0px 0px #2c3539',
+                        'retro-sm': '2px 2px 0px 0px #2c3539',
+                        'retro-hover': '2px 2px 0px 0px #2c3539',
                     }
                 }
             }
@@ -35,73 +44,85 @@
 
     <style>
         /* Custom scrollbars */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #FDFBF7; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #C4D7C4; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #8FBC8F; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #f4f1ea; border-left: 2px solid #2c3539; }
+        ::-webkit-scrollbar-thumb { background: #8bb28b; border: 2px solid #2c3539; border-radius: 0px; }
+        ::-webkit-scrollbar-thumb:hover { background: #e07a5f; }
         
-        /* Hide scrollbar for the horizontal tabs but keep functionality */
+        /* Hide scrollbar for tabs */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Smooth fading animations */
-        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        /* Smooth fading */
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Card hover effects */
-        .app-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .app-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -5px rgba(0, 0, 0, 0.04);
-            border-color: #C4D7C4;
+        /* Retro Card Interactions */
+        .retro-card { 
+            transition: all 0.15s ease-out; 
+        }
+        .retro-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #2c3539;
+        }
+        .retro-card:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #2c3539;
         }
 
-        /* Tab transition */
-        .garden-tab { transition: all 0.2s ease; }
-        .garden-tab:active { transform: scale(0.95); }
+        /* Tab Interactions */
+        .retro-tab { transition: all 0.1s ease; }
+        .retro-tab:active { 
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px 0px #2c3539;
+        }
+        .retro-tab.active-tab {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px 0px #2c3539;
+        }
     </style>
 </head>
-<body class="bg-garden-cream text-gray-800 font-sans min-h-screen flex flex-col">
+<body class="bg-garden-paper text-garden-ink font-sans min-h-screen flex flex-col selection:bg-garden-mustard selection:text-garden-ink">
 
     <!-- Navbar / Header -->
-    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-garden-sage/50 shadow-sm">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <header class="bg-garden-paper sticky top-0 z-50 border-b-4 border-garden-ink shadow-sm pt-4 pb-3">
+        <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <span class="text-3xl md:text-4xl">🌱</span>
+                <i data-lucide="leaf" class="w-8 h-8 text-garden-sage stroke-[2.5]"></i>
                 <div>
-                    <h1 class="font-serif text-2xl md:text-3xl font-bold text-garden-green leading-none tracking-tight">Learning Garden</h1>
-                    <p class="text-xs md:text-sm text-garden-dirt italic font-semibold">Explore, Learn, and Grow</p>
+                    <h1 class="font-serif text-2xl md:text-3xl font-bold leading-none tracking-tight">Learning Garden</h1>
+                    <p class="text-xs md:text-sm italic font-bold opacity-70 mt-0.5">Explore, Learn, and Grow</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-2 md:gap-4">
+            <div class="flex items-center gap-3 md:gap-4">
                 <!-- Search Bar -->
                 <div class="hidden md:flex relative group">
-                    <input type="text" id="searchInput" placeholder="Search the garden..." 
-                        class="pl-10 pr-4 py-2 bg-garden-cream border-2 border-garden-sage rounded-full text-sm focus:outline-none focus:border-garden-green focus:ring-4 focus:ring-garden-green/20 transition-all w-56 focus:w-72 shadow-inner">
-                    <span class="absolute left-3 top-2.5 text-gray-400 group-focus-within:text-garden-green transition-colors text-lg">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search tools..." 
+                        class="pl-10 pr-4 py-2 bg-white border-2 border-garden-ink rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-garden-mustard shadow-retro-sm transition-all w-56 focus:w-72 font-bold placeholder-garden-ink/50">
+                    <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 opacity-50 group-focus-within:opacity-100 transition-opacity"></i>
                 </div>
                 
                 <!-- About Button -->
-                <button onclick="toggleModal('aboutModal')" class="p-2 bg-garden-cream hover:bg-garden-sage/30 rounded-full transition-colors border border-garden-sage/30" title="About">
-                    <span class="text-xl">ℹ️</span>
+                <button onclick="toggleModal('aboutModal')" class="p-2.5 bg-white border-2 border-garden-ink rounded-lg shadow-retro-sm hover:bg-garden-mustard transition-colors active:translate-y-1 active:shadow-none" title="About">
+                    <i data-lucide="info" class="w-5 h-5"></i>
                 </button>
                 
-                <!-- Settings/Reset Button -->
-                <button onclick="toggleModal('settingsModal')" class="p-2 bg-garden-cream hover:bg-garden-sage/30 rounded-full transition-colors border border-garden-sage/30" title="Settings">
-                    <span class="text-xl">⚙️</span>
+                <!-- Settings Button -->
+                <button onclick="toggleModal('settingsModal')" class="p-2.5 bg-white border-2 border-garden-ink rounded-lg shadow-retro-sm hover:bg-garden-sage transition-colors active:translate-y-1 active:shadow-none" title="Settings">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
                 </button>
             </div>
         </div>
         <!-- Mobile Search -->
-        <div class="md:hidden px-4 pb-3">
+        <div class="md:hidden px-4 pt-3">
             <div class="relative">
-                <input type="text" id="mobileSearchInput" placeholder="Search the garden..." 
-                    class="w-full pl-10 pr-4 py-2.5 bg-garden-cream border-2 border-garden-sage rounded-full text-sm focus:outline-none focus:border-garden-green shadow-inner">
-                <span class="absolute left-3 top-2.5 text-gray-400 text-lg">🔍</span>
+                <input type="text" id="mobileSearchInput" placeholder="Search tools..." 
+                    class="w-full pl-10 pr-4 py-2.5 bg-white border-2 border-garden-ink rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-garden-mustard shadow-retro-sm font-bold">
+                <i data-lucide="search" class="absolute left-3 top-3 w-4 h-4 opacity-50"></i>
             </div>
         </div>
     </header>
@@ -110,89 +131,89 @@
     <main class="container mx-auto px-4 py-6 flex-grow flex flex-col">
         
         <!-- Gamification Banner -->
-        <div class="bg-white rounded-2xl p-4 md:p-5 mb-6 border-2 border-garden-sage/40 shadow-sm flex flex-wrap items-center justify-between gap-4 fade-in">
+        <div class="bg-white rounded-xl p-4 md:p-5 mb-8 border-2 border-garden-ink shadow-retro flex flex-wrap items-center justify-between gap-4 fade-in">
             <div class="flex items-center gap-4">
-                <div class="bg-gradient-to-br from-garden-light-green to-garden-green text-white p-3 rounded-2xl h-14 w-14 flex items-center justify-center text-3xl shadow-inner border border-green-600/20" id="levelIcon">
-                    🌱
+                <div class="bg-garden-mustard border-2 border-garden-ink p-3 rounded-xl h-14 w-14 flex items-center justify-center shadow-inner" id="levelIconContainer">
+                    <i data-lucide="sprout" class="w-8 h-8 stroke-[2.5]" id="levelIcon"></i>
                 </div>
                 <div>
-                    <h2 class="font-bold text-garden-green text-xl" id="gardenerTitle">Seedling</h2>
-                    <p class="text-sm text-gray-500 font-medium">You have explored <span id="visitCount" class="font-bold text-garden-dirt text-base">0</span> tools.</p>
+                    <h2 class="font-serif font-bold text-xl" id="gardenerTitle">Seedling</h2>
+                    <p class="text-sm font-bold opacity-75">You have explored <span id="visitCount" class="text-garden-clay text-lg mx-1">0</span> tools.</p>
                 </div>
             </div>
             <div class="flex gap-2">
-                 <div class="text-sm bg-red-50 px-4 py-2 rounded-xl border border-red-100 text-red-800 font-bold flex items-center gap-2 shadow-sm">
-                    <span>❤️</span> <span id="favCount">0</span> Favorites
+                 <div class="text-sm bg-white px-4 py-2 rounded-lg border-2 border-garden-ink font-bold flex items-center gap-2 shadow-retro-sm">
+                    <i data-lucide="heart" class="w-4 h-4 text-garden-clay fill-garden-clay"></i> 
+                    <span id="favCount">0</span> Favorites
                  </div>
             </div>
         </div>
 
         <!-- Garden Plot Navigation (Tabs) -->
-        <nav class="mb-6 fade-in">
-            <div class="flex items-center justify-center gap-2 mb-3 px-1">
-                <span class="text-garden-dirt font-serif font-bold text-lg">Signposts</span>
-                <span class="text-gray-400 text-sm">— Choose a plot to explore!</span>
+        <nav class="mb-8 fade-in">
+            <div class="flex items-center justify-center gap-2 mb-4 px-1">
+                <h3 class="font-serif font-bold text-xl uppercase tracking-wider">Signposts</h3>
             </div>
-            <div id="categoryTabs" class="flex flex-wrap justify-center gap-2 md:gap-3 pb-4 pt-1 px-1">
+            <div id="categoryTabs" class="flex flex-wrap justify-center gap-3 pb-2 pt-1 px-1">
                 <!-- Tabs Injected Here -->
             </div>
         </nav>
 
         <!-- Current Plot Header -->
-        <div id="currentPlotHeader" class="flex items-center gap-3 mb-6 border-b-2 border-garden-sage/50 pb-3 fade-in">
-            <div id="plotIcon" class="w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-sm bg-gray-100">
-                📁
+        <div id="currentPlotHeader" class="flex items-center gap-4 mb-6 pb-2 fade-in">
+            <div id="plotIcon" class="w-12 h-12 rounded-xl flex items-center justify-center border-2 border-garden-ink shadow-retro-sm bg-white">
+                <i data-lucide="folder" class="w-6 h-6"></i>
             </div>
-            <h2 id="plotTitle" class="font-serif text-3xl font-bold text-gray-800">Plot Name</h2>
+            <h2 id="plotTitle" class="font-serif text-3xl font-bold uppercase tracking-wide">Plot Name</h2>
         </div>
 
         <!-- Apps Grid Area -->
-        <div id="appsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-10">
+        <div id="appsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
             <!-- App Cards Injected Here -->
         </div>
 
         <!-- No Results Message -->
-        <div id="noResults" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-garden-sage fade-in">
-            <div class="text-6xl mb-4">🍃</div>
-            <h3 class="font-serif text-2xl font-bold text-garden-dirt mb-2">Oh no! A slight breeze!</h3>
-            <p class="text-gray-500 text-lg mb-6">We couldn't find any tools matching your search.</p>
-            <button onclick="clearSearch()" class="px-6 py-3 bg-garden-green text-white font-bold rounded-full hover:bg-garden-light-green transition-colors shadow-md">Clear Search and Return</button>
+        <div id="noResults" class="hidden text-center py-16 bg-white rounded-xl border-2 border-garden-ink shadow-retro fade-in">
+            <i data-lucide="wind" class="w-16 h-16 mx-auto mb-4 text-garden-lake stroke-1"></i>
+            <h3 class="font-serif text-2xl font-bold mb-2">Oh no! A slight breeze!</h3>
+            <p class="text-lg mb-6 font-semibold opacity-75">We couldn't find any tools matching your search.</p>
+            <button onclick="clearSearch()" class="px-6 py-3 bg-garden-ink text-white font-bold rounded-lg hover:bg-opacity-90 transition-colors shadow-retro-sm border-2 border-transparent active:border-garden-ink active:translate-y-1 active:shadow-none">Clear Search and Return</button>
         </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-garden-sage/30 mt-auto">
-        <div class="container mx-auto px-4 py-6 text-center text-stone-500 text-sm font-medium">
+    <footer class="bg-garden-paper border-t-4 border-garden-ink mt-auto">
+        <div class="container mx-auto px-4 py-6 text-center text-sm font-bold opacity-75">
             <p>© 2026 Learning Garden. Reggio Emilia Inspired.</p>
         </div>
     </footer>
 
     <!-- About Modal -->
-    <div id="aboutModal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl transform transition-all">
+    <div id="aboutModal" class="fixed inset-0 bg-garden-ink/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-garden-paper rounded-xl border-4 border-garden-ink max-w-md w-full p-8 shadow-[8px_8px_0_#2c3539] transform transition-all">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="font-serif text-3xl text-garden-green font-bold">About Our Garden</h3>
-                <button onclick="toggleModal('aboutModal')" class="text-gray-400 hover:text-red-500 text-3xl transition-colors">&times;</button>
+                <h3 class="font-serif text-3xl font-bold uppercase">About Our Garden</h3>
+                <button onclick="toggleModal('aboutModal')" class="hover:text-garden-clay transition-colors"><i data-lucide="x" class="w-8 h-8 stroke-[3]"></i></button>
             </div>
-            <div class="prose prose-stone text-base mb-8 text-gray-600 leading-relaxed" id="aboutText">
+            <div class="text-base mb-8 leading-relaxed font-semibold space-y-4" id="aboutText">
                 <!-- Text injected from script -->
             </div>
-            <button onclick="toggleModal('aboutModal')" class="w-full py-3 bg-garden-green font-bold text-white rounded-xl hover:bg-garden-light-green transition-colors shadow-md text-lg">Close</button>
+            <button onclick="toggleModal('aboutModal')" class="w-full py-3 bg-white border-2 border-garden-ink font-bold rounded-lg hover:bg-garden-sage transition-colors shadow-retro-sm active:translate-y-1 active:shadow-none text-lg uppercase tracking-wider">Close</button>
         </div>
     </div>
 
     <!-- Settings Modal -->
-    <div id="settingsModal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-sm w-full p-8 shadow-2xl transform transition-all">
+    <div id="settingsModal" class="fixed inset-0 bg-garden-ink/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-garden-paper rounded-xl border-4 border-garden-ink max-w-sm w-full p-8 shadow-[8px_8px_0_#2c3539] transform transition-all">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="font-serif text-2xl text-garden-dirt font-bold">Settings</h3>
-                <button onclick="toggleModal('settingsModal')" class="text-gray-400 hover:text-red-500 text-3xl transition-colors">&times;</button>
+                <h3 class="font-serif text-2xl font-bold uppercase">Settings</h3>
+                <button onclick="toggleModal('settingsModal')" class="hover:text-garden-clay transition-colors"><i data-lucide="x" class="w-8 h-8 stroke-[3]"></i></button>
             </div>
-            <p class="text-base text-gray-600 mb-8 leading-relaxed">Need a fresh start? This will clear all your favorites and exploration badges so you can start planting anew.</p>
+            <p class="text-base font-semibold mb-8 leading-relaxed">Need a fresh start? This will clear all your favorites and exploration badges so you can start planting anew.</p>
             
-            <button onclick="resetData()" class="w-full py-3 border-2 border-red-200 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center gap-2 text-lg">
-                <span>🗑️</span> Reset Progress
+            <button onclick="resetData()" class="w-full py-3 bg-white border-2 border-garden-ink text-garden-clay font-bold rounded-lg hover:bg-red-50 transition-colors flex items-center justify-center gap-2 text-lg shadow-retro-sm active:translate-y-1 active:shadow-none uppercase tracking-wider">
+                <i data-lucide="trash-2" class="w-5 h-5"></i> Reset Progress
             </button>
         </div>
     </div>
@@ -204,34 +225,33 @@
          */
         const CONFIG = {
             aboutContent: `
-                <p class="mb-3">Welcome to your digital atelier! This space is designed for you to explore, create, and discover new ideas.</p>
-                <p class="mb-2 font-bold text-gray-800">How to use:</p>
-                <ul class="list-disc pl-5 mb-4 space-y-1">
+                <p>Welcome to your digital atelier! This space is designed for you to explore, create, and discover new ideas.</p>
+                <p class="font-bold underline decoration-2 underline-offset-4">How to use:</p>
+                <ul class="list-disc pl-5 space-y-2">
                     <li>Click the <strong>Signposts</strong> at the top to visit different plots in the garden.</li>
-                    <li>Click the <strong>Heart</strong> (❤️) to add tools to your personal Favorites plot.</li>
+                    <li>Click the <strong>Heart</strong> icon to add tools to your personal Favorites plot.</li>
                     <li>Watch your "Gardener Level" grow as you explore!</li>
                 </ul>
-                <div class="bg-garden-cream p-4 rounded-xl border border-garden-sage/50">
-                    <p class="italic text-garden-green font-serif">"The wider the range of possibilities we offer children, the more intense will be their motivations."</p>
-                    <p class="text-right text-sm mt-2 font-bold text-garden-dirt">- Loris Malaguzzi</p>
+                <div class="bg-white p-5 rounded-lg border-2 border-garden-ink shadow-retro-sm mt-4">
+                    <p class="font-serif text-lg leading-snug">"The wider the range of possibilities we offer children, the more intense will be their motivations."</p>
+                    <p class="text-right text-sm mt-3 font-bold opacity-75 uppercase tracking-wide">- Loris Malaguzzi</p>
                 </div>
             `,
             levels: [
-                { count: 0, title: "Seedling", icon: "🌱" },
-                { count: 5, title: "Sprout", icon: "🌿" },
-                { count: 15, title: "Gardener", icon: "🌻" },
-                { count: 30, title: "Master Gardener", icon: "🌳" },
-                { count: 50, title: "Forest Ranger", icon: "🌲" }
+                { count: 0, title: "Seedling", icon: "sprout" },
+                { count: 5, title: "Sprout", icon: "leaf" },
+                { count: 15, title: "Gardener", icon: "tree-deciduous" },
+                { count: 30, title: "Master Gardener", icon: "tree-pine" },
+                { count: 50, title: "Forest Ranger", icon: "tent" }
             ]
         };
 
         // --- APP DATA ---
-        // Apps are now ordered logically within their categories (Basics -> Advanced -> Games)
+        // Using Lucide icon names instead of Emojis
         const appsData = {
             "Math: Fractions": {
-                icon: "🍕",
-                color: "bg-blue-100 text-blue-800 border-blue-200",
-                bgColor: "bg-blue-50",
+                icon: "pie-chart",
+                color: "bg-garden-lake",
                 items: [
                     { name: "Visual Fractions", url: "https://bfugitt.github.io/visualfractions/", desc: "Match the picture blocks to their correct fraction families." },
                     { name: "Fraction Tiles", url: "https://bfugitt.github.io/fractiontiles/", desc: "Use colorful tiles to build, mix, and compare different fractions." },
@@ -241,14 +261,12 @@
                     { name: "Fraction Cards", url: "https://bfugitt.github.io/fractioncards/", desc: "Play a fun card game by finding the fractions that match the hidden rules." },
                     { name: "Fraction Munchers", url: "https://bfugitt.github.io/fractionmuncher/", desc: "Chomp through the grid to eat only the right fractions!" },
                     { name: "Fraction Garden: Mult & Div", url: "https://bfugitt.github.io/fractionmultdiv/", desc: "See how multiplying and dividing fractions makes your garden grow!" },
-
                     { name: "Decimal Orchard", url: "https://bfugitt.github.io/decimalorchard/", desc: "Learn to relate fractions and decimals, and start adding and subtracting decimals." }
                 ]
             },
             "Math: Practice": {
-                icon: "🧮",
-                color: "bg-indigo-100 text-indigo-800 border-indigo-200",
-                bgColor: "bg-indigo-50",
+                icon: "calculator",
+                color: "bg-garden-mustard",
                 items: [
                     { name: "Primary Facts", url: "https://bfugitt.github.io/student-pages/primary_facts_v4.html", desc: "Brush up on your quick addition and subtraction skills." },
                     { name: "Elementary Facts", url: "https://bfugitt.github.io/student-pages/elementary_facts_v2.html", desc: "Train your brain with addition, subtraction, multiplication, and division." },
@@ -264,14 +282,12 @@
                     { name: "Math Muncher", url: "https://bfugitt.github.io/munchers/", desc: "Waka-waka! Eat the right numbers and avoid the math ghosts!" },
                     { name: "Math Diver", url: "https://bfugitt.github.io/mathdiver/", desc: "Dive deep into the ocean to catch the falling math factors." },
                     { name: "Measure", url: "https://bfugitt.github.io/measure/", desc: "Practice converting measurements of length, capacity, weight, and mass." },
-
                     { name: "Points and Lines", url: "https://bfugitt.github.io/rene/", desc: "Plot points on a map to draw cool shapes and lines." }
                 ]
             },
             "Language Arts": {
-                icon: "📚",
-                color: "bg-yellow-100 text-yellow-800 border-yellow-200",
-                bgColor: "bg-yellow-50",
+                icon: "book-open",
+                color: "bg-[#e2c17b]", // Deeper mustard/gold
                 items: [
                     { name: "Word Weaver", url: "https://bfugitt.github.io/cloze/", desc: "Read the story and weave the missing words back into the blank spaces." },
                     { name: "Vocabulary", url: "https://bfugitt.github.io/macvocab/", desc: "Master the most important words for 4th-grade readers and writers!" },
@@ -281,32 +297,27 @@
                     { name: "Latin Roots", url: "https://bfugitt.github.io/maclatin/", desc: "Unlock the ancient Latin secrets hiding inside English words." },
                     { name: "Magister", url: "https://bfugitt.github.io/magister/", desc: "Challenge yourself by learning how ancient Romans changed their verbs." },
                     { name: "Reading Assessments", url: "https://bfugitt.github.io/dibels/", desc: "Test your reading skills and see how much you've grown." },
-                    { name: "Type-O-Matic", url: "https://bfugitt.github.io/typeomatic/", desc: "Practice touch typing.  Level up if you are fast and accurate." },
+                    { name: "Type-O-Matic", url: "https://bfugitt.github.io/typeomatic/", desc: "Practice touch typing. Level up if you are fast and accurate." },
                     { name: "Part of Speech Blaster", url: "https://bfugitt.github.io/wordblaster/", desc: "Catch the correct part of speech, blast the others." },
                     { name: "Spelling Blaster", url: "https://bfugitt.github.io/wordblaster/", desc: "Catch the correctly spelled words, blast the wrong ones." },
                     { name: "Cursive Trace", url: "https://bfugitt.github.io/cursive/", desc: "Practice tracing your cursive letters and words." },
                     { name: "MacType", url: "https://bfugitt.github.io/mactype/", desc: "Train your fingers to fly across the keyboard without looking!" },
                     { name: "Typing Garden", url: "https://bfugitt.github.io/gardentype/", desc: "Plant words as you type and watch your typing speed blossom!" },
                     { name: "BibleType", url: "https://bfugitt.github.io/bibletype/", desc: "Practice your typing while learning words from the Bible." },
-                    
                     { name: "ValenTyping Garden", url: "https://bfugitt.github.io/gardentype/valentype", desc: "Type sweet messages in this special Valentine's Day typing game." }
                 ]
             },
             "History & Sci": {
-                icon: "🌍",
-                color: "bg-green-100 text-green-800 border-green-200",
-                bgColor: "bg-green-50",
+                icon: "telescope",
+                color: "bg-garden-sage",
                 items: [
                     { name: "El Camino Real", url: "https://bfugitt.github.io/elcaminoreal/", desc: "Step back in time and explore the famous California mission road." },
                     { name: "Mission Builder", url: "https://bfugitt.github.io/missionbuilder", desc: "Be the architect and build your very own historic California mission." },
                     { name: "Rancho Tycoon", url: "https://bfugitt.github.io/rancho/", desc: "Run your own cattle ranch and become a rich trader in old California!" },
                     { name: "Mission Trail Game", url: "https://bfugitt.github.io/rogue/calirogue", desc: "Go on a silly, fun adventure along the historic California Mission trail." },
                     { name: "Gold Rush Trivia", url: "https://bfugitt.github.io/goldrushtrivia/", desc: "Test your knowledge of the California Gold Rush and collect nuggets." },
-
                     { name: "Cuneiform Clay Tablet", url: "https://bfugitt.github.io/cune/", desc: "Learn the ancient writing form used by the earliest civilizations." },
                     { name: "Emoji AI Simulator", url: "https://bfugitt.github.io/emojinet/", desc: "Explore how neural nets work to recognize faces and other patterns." },
-
-                    
                     { name: "States Map", url: "https://bfugitt.github.io/states/", desc: "Can you drag and drop all 50 states and their capitals to the right spot?" },
                     { name: "World Map", url: "https://bfugitt.github.io/world/", desc: "Travel the globe and test your knowledge of countries around the world." },
                     { name: "Royal Families", url: "https://bfugitt.github.io/learnit/?mod=royals.json", desc: "Test your knowledge of kings, queens, and European history." },
@@ -317,21 +328,19 @@
                 ]
             },
             "Music & Audio": {
-                icon: "🎵",
-                color: "bg-purple-100 text-purple-800 border-purple-200",
-                bgColor: "bg-purple-50",
+                icon: "music",
+                color: "bg-garden-lavender",
                 items: [
                     { name: "Music Theory", url: "https://bfugitt.github.io/musictheory", desc: "Learn the secret language of music and how to read notes." },
                     { name: "Music Accompanist", url: "https://bfugitt.github.io/guitaracc/", desc: "Make a backing track with drums, bass, and piano." },
-                
                     { name: "Guitar Notes", url: "https://bfugitt.github.io/guitarnotes/", desc: "Learn exactly where every note lives on the guitar fretboard." },
                     { name: "Guitar Chord Practice", url: "https://bfugitt.github.io/guitar/", desc: "Train your fingers to switch between guitar chords smoothly." },
                     { name: "Guitar Theory", url: "https://bfugitt.github.io/guitartheory/", desc: "Learn how to read guitar tabs and sheet music like a pro." },
                     { name: "Guitar Theory 2", url: "https://bfugitt.github.io/guitartheory/gt2.html", desc: "Take your guitar reading skills to the next level." },
                     { name: "Sound Garden", url: "https://bfugitt.github.io/kidsynth", desc: "Create your own blooming beats using this colorful visual music maker!" },
                     { name: "Songer", url: "https://bfugitt.github.io/songer/", desc: "Build your own songs quickly by mixing chords and drum beats." },
-                     { name: "Beat Drop", url: "https://bfugitt.github.io/dj", desc: "Don't let the beat drop." },
-                     { name: "Chord Craft", url: "https://bfugitt.github.io/chordcraft", desc: "Quick and easy guitar chords.  Make your own chordbook." },
+                    { name: "Beat Drop", url: "https://bfugitt.github.io/dj", desc: "Don't let the beat drop." },
+                    { name: "Chord Craft", url: "https://bfugitt.github.io/chordcraft", desc: "Quick and easy guitar chords. Make your own chordbook." },
                     { name: "Volca", url: "https://bfugitt.github.io/volca", desc: "Connect and play with real electronic drum beats and samples." },
                     { name: "Jt4000", url: "https://bfugitt.github.io/jt4000", desc: "Make wild, futuristic sounds with this digital synthesizer." },
                     { name: "ProVSmini", url: "https://bfugitt.github.io/provsmini", desc: "Mix and morph different sounds together to create new music." },
@@ -341,9 +350,8 @@
                 ]
             },
             "Creative Tools": {
-                icon: "🎨",
-                color: "bg-red-100 text-red-800 border-red-200",
-                bgColor: "bg-red-50",
+                icon: "palette",
+                color: "bg-garden-clay",
                 items: [
                     { name: "Stamp Studio", url: "https://bfugitt.github.io/stampstudio/", desc: "Draw, carve, and print your own custom digital art stamps!" },
                     { name: "PixArt Studio", url: "https://bfugitt.github.io/pixart/", desc: "Create retro video-game-style art and make your own animations." },
@@ -352,18 +360,15 @@
                 ]
             },
             "Logic & Puzzles": {
-                icon: "🧩",
-                color: "bg-orange-100 text-orange-800 border-orange-200",
-                bgColor: "bg-orange-50",
+                icon: "puzzle",
+                color: "bg-[#e8a366]", // Muted orange
                 items: [
                     { name: "Logic", url: "https://bfugitt.github.io/logic/", desc: "Give your brain a serious workout with these tricky logic puzzles." },
                     { name: "Crypto", url: "https://bfugitt.github.io/crypto/", desc: "Become a secret agent and learn how to write and crack hidden codes!" },
-
                     { name: "Cuneiform Clay Tablet", url: "https://bfugitt.github.io/cune/", desc: "Learn the ancient writing form used by the earliest civilizations." },
-                    { name: "10,000 Dice Game", url: "https://bfugitt.github.io/dice10000/", desc: "Play the dice game and learn about risk and probability.  Try to get 10,000 points." },
-                    { name: "Acorn Hunt", url: "https://bfugitt.github.io/dice10000/acornhunt", desc: "Learn about reasonable risk and collect the acorns.  Beware the dogs.  Try to get 13 acorns." },
+                    { name: "10,000 Dice Game", url: "https://bfugitt.github.io/dice10000/", desc: "Play the dice game and learn about risk and probability. Try to get 10,000 points." },
+                    { name: "Acorn Hunt", url: "https://bfugitt.github.io/dice10000/acornhunt", desc: "Learn about reasonable risk and collect the acorns. Beware the dogs. Try to get 13 acorns." },
                     { name: "Easter Maze", url: "https://bfugitt.github.io/rogue/easter", desc: "Help the Easter Bunny get candy and eggs." },
-
                     { name: "Backgammon", url: "https://bfugitt.github.io/backgammon/", desc: "Learn the rules and strategy of one of the oldest board games in the world." },
                     { name: "Saints Journey", url: "https://bfugitt.github.io/rogue/saintrogue", desc: "Go on a goofy, puzzle-filled adventure with historic saints." },
                     { name: "Community Garden", url: "https://bfugitt.github.io/rogue/gardenrogue", desc: "Crawl through the community garden and solve wacky puzzles!" },
@@ -372,9 +377,8 @@
                 ]
             },
             "Connect & Tools": {
-                icon: "💬",
-                color: "bg-teal-100 text-teal-800 border-teal-200",
-                bgColor: "bg-teal-50",
+                icon: "message-square",
+                color: "bg-[#7db4a9]", // Muted Teal
                 items: [
                     { name: "Joli Chat", url: "https://bfugitt.github.io/jolichat/", desc: "A safe and fun place to chat and share ideas with your classmates." },
                     { name: "Telegraph", url: "https://bfugitt.github.io/telegraph", desc: "Tap out secret messages using dots and dashes like they did in the old days!" },
@@ -387,11 +391,12 @@
         let state = {
             favorites: [],
             visited: [],
-            activeCategory: 'Favorites', // 'Favorites' or a Category Name, or 'Search'
+            activeCategory: 'Favorites', // 'Favorites', Category Name, or 'Search'
             searchQuery: ''
         };
 
         function loadState() {
+            // 1. Load LocalStorage
             const saved = localStorage.getItem('gardenState');
             if (saved) {
                 const parsed = JSON.parse(saved);
@@ -399,7 +404,20 @@
                 state.visited = parsed.visited || [];
             }
             
-            // Default to Math: Fractions if no favorites exist to avoid blank screen
+            // 2. Check URL for specific plot request (e.g., ?plot=Language Arts)
+            const urlParams = new URLSearchParams(window.location.search);
+            const requestedPlot = urlParams.get('plot');
+            
+            if (requestedPlot) {
+                // Find a case-insensitive match from our appsData
+                const match = Object.keys(appsData).find(k => k.toLowerCase() === requestedPlot.toLowerCase());
+                if (match) {
+                    state.activeCategory = match;
+                    return; // Exit early, URL param takes priority
+                }
+            }
+            
+            // 3. Defaults if no URL parameter
             if (state.favorites.length === 0) {
                 state.activeCategory = "Math: Fractions";
             } else {
@@ -427,8 +445,6 @@
                 }
             }
             saveState();
-            
-            // Re-render UI. Only re-render full tabs if favorites empty state changed.
             renderTabs();
             renderActivePlot(); 
         }
@@ -456,6 +472,12 @@
                 state.favorites = [];
                 state.visited = [];
                 state.activeCategory = "Math: Fractions";
+                
+                // Clear URL parameter if exists so it doesn't get stuck on refresh
+                const url = new URL(window.location);
+                url.searchParams.delete('plot');
+                window.history.replaceState({}, '', url);
+
                 saveState();
                 toggleModal('settingsModal');
                 renderTabs();
@@ -468,7 +490,6 @@
             if (state.searchQuery) {
                 state.activeCategory = 'Search';
             } else {
-                // If search is cleared, go back to previously active or Math
                 state.activeCategory = state.favorites.length > 0 ? 'Favorites' : 'Math: Fractions';
             }
             renderTabs();
@@ -500,45 +521,40 @@
             document.getElementById('visitCount').textContent = count;
             document.getElementById('favCount').textContent = favCount;
             document.getElementById('gardenerTitle').textContent = currentLevel.title;
-            document.getElementById('levelIcon').textContent = currentLevel.icon;
+            
+            // Update the icon using Lucide standard elements
+            const iconContainer = document.getElementById('levelIconContainer');
+            iconContainer.innerHTML = `<i data-lucide="${currentLevel.icon}" class="w-8 h-8 stroke-[2.5]"></i>`;
+            
+            // Need to recreate icons because we dynamically injected the <i> tag
+            lucide.createIcons();
         }
 
-        function createCard(app, highlightTerm = '') {
+        function createCard(app, parentColorClass = "bg-white") {
             const isFav = state.favorites.includes(app.name);
             const isVisited = state.visited.includes(app.name);
             
-            const heartClass = isFav ? "text-red-500 scale-110 opacity-100" : "text-gray-300 opacity-50 group-hover:opacity-100 hover:text-red-400";
-            const heartFill = isFav ? "❤️" : "🤍";
-            const visitedBadge = isVisited ? `<span class="absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider bg-garden-green text-white px-2 py-0.5 rounded-full shadow-sm z-10">Explored ✓</span>` : '';
-
-            // Optional: Find which category this app belongs to for the accent color
-            let parentCatColor = "from-garden-light-green to-garden-green";
-            for(let cat in appsData) {
-                if(appsData[cat].items.find(i => i.name === app.name)) {
-                    // Extract basic tailwind color keyword (e.g., 'blue', 'red') from bg-blue-50
-                    const match = appsData[cat].bgColor.match(/bg-([a-z]+)-/);
-                    if(match) parentCatColor = `from-${match[1]}-300 to-${match[1]}-500`;
-                }
-            }
+            // Heart Icon State
+            const heartFillClass = isFav ? "fill-garden-clay text-garden-clay" : "text-garden-ink group-hover:text-garden-clay";
+            
+            // Visited Checkmark - Retro style
+            const visitedBadge = isVisited ? `<div class="absolute -top-3 -left-3 bg-garden-ink text-white text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-sm shadow-retro-sm z-10 flex items-center gap-1 border-2 border-garden-ink"><i data-lucide="check" class="w-3 h-3"></i> Explored</div>` : '';
 
             return `
-                <div class="app-card relative bg-white rounded-2xl border-2 border-garden-sage/30 p-5 flex flex-col h-full cursor-pointer group shadow-sm overflow-hidden" onclick="if(!event.target.closest('.fav-btn')) trackVisit('${app.name}', '${app.url}')">
+                <div class="retro-card relative bg-white rounded-xl border-2 border-garden-ink p-5 flex flex-col h-full cursor-pointer group shadow-retro" onclick="if(!event.target.closest('.fav-btn')) trackVisit('${app.name}', '${app.url}')">
                     ${visitedBadge}
                     
-                    <!-- Decorative background blob -->
-                    <div class="absolute -right-6 -top-6 w-24 h-24 bg-gradient-to-br ${parentCatColor} opacity-5 rounded-full blur-2xl transition-opacity group-hover:opacity-15"></div>
-
-                    <div class="flex justify-between items-start mb-3 pt-4">
-                        <h3 class="font-bold text-gray-800 text-lg group-hover:text-garden-green transition-colors pr-8 leading-tight">${app.name}</h3>
-                        <button class="fav-btn absolute top-4 right-4 text-2xl transition-all active:scale-90 ${heartClass}" 
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-serif font-bold text-gray-900 text-xl pr-8 leading-tight">${app.name}</h3>
+                        <button class="fav-btn absolute top-4 right-4 transition-transform active:scale-90 p-1" 
                                 onclick="toggleFavorite('${app.name}')" title="${isFav ? 'Remove Favorite' : 'Add Favorite'}">
-                            ${heartFill}
+                            <i data-lucide="heart" class="w-6 h-6 transition-colors ${heartFillClass}"></i>
                         </button>
                     </div>
-                    <p class="text-sm text-gray-500 leading-relaxed">${app.desc}</p>
+                    <p class="text-sm font-semibold opacity-75 leading-relaxed flex-grow">${app.desc}</p>
                     
-                    <div class="mt-auto pt-5">
-                        <div class="h-1.5 w-12 bg-gray-200 group-hover:w-full bg-gradient-to-r ${parentCatColor} transition-all duration-300 rounded-full"></div>
+                    <div class="mt-4 pt-4 border-t-2 border-garden-ink/10 flex justify-end">
+                        <div class="w-8 h-2 rounded-full border border-garden-ink shadow-[1px_1px_0_#2c3539] ${parentColorClass} group-hover:w-full transition-all duration-300"></div>
                     </div>
                 </div>
             `;
@@ -548,25 +564,26 @@
             const tabsContainer = document.getElementById('categoryTabs');
             tabsContainer.innerHTML = '';
 
-            // Helper to create a tab
             const createTab = (id, icon, label, defaultColors, activeColors) => {
                 const isActive = state.activeCategory === id;
-                const baseClasses = "garden-tab flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm whitespace-nowrap cursor-pointer border-2 snap-start ";
-                const colorClasses = isActive ? activeColors : defaultColors;
+                const baseClasses = "retro-tab flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap cursor-pointer border-2 border-garden-ink snap-start uppercase tracking-wider ";
                 
+                // If active, it stays "pressed"
+                const activeStateClasses = isActive ? "translate-y-[2px] translate-x-[2px] shadow-none " + activeColors : "shadow-retro-sm hover:bg-opacity-80 " + defaultColors;
+
                 return `
-                    <button onclick="setCategory('${id}')" class="${baseClasses} ${colorClasses}">
-                        <span class="text-xl">${icon}</span> ${label}
+                    <button onclick="setCategory('${id}')" class="${baseClasses} ${activeStateClasses}">
+                        <i data-lucide="${icon}" class="w-4 h-4"></i> ${label}
                     </button>
                 `;
             };
 
-            // 1. Favorites Tab (only if they have favorites)
+            // 1. Favorites Tab
             if (state.favorites.length > 0) {
                 tabsContainer.innerHTML += createTab(
-                    'Favorites', '❤️', 'My Plot', 
-                    'bg-white text-gray-600 border-gray-200 hover:border-red-200 hover:bg-red-50', 
-                    'bg-red-100 text-red-800 border-red-300 shadow-inner'
+                    'Favorites', 'heart', 'My Plot', 
+                    'bg-white text-garden-ink', 
+                    'bg-garden-clay text-white'
                 );
             }
 
@@ -574,10 +591,12 @@
             Object.entries(appsData).forEach(([catName, data]) => {
                 tabsContainer.innerHTML += createTab(
                     catName, data.icon, catName,
-                    'bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-gray-300',
-                    data.color + ' shadow-inner'
+                    'bg-white text-garden-ink',
+                    data.color + ' text-garden-ink' // Use category's specific muted color when active
                 );
             });
+            
+            lucide.createIcons();
         }
 
         function renderActivePlot() {
@@ -585,11 +604,10 @@
             const noResults = document.getElementById('noResults');
             const header = document.getElementById('currentPlotHeader');
             const plotTitle = document.getElementById('plotTitle');
-            const plotIcon = document.getElementById('plotIcon');
+            const plotIconContainer = document.getElementById('plotIcon');
             
             grid.innerHTML = '';
             
-            // Re-trigger animation
             grid.classList.remove('fade-in');
             void grid.offsetWidth; // trigger reflow
             grid.classList.add('fade-in');
@@ -598,14 +616,14 @@
             if (state.activeCategory === 'Search') {
                 let matchCount = 0;
                 header.classList.remove('hidden');
-                plotIcon.className = "w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-sm bg-yellow-100 border border-yellow-200";
-                plotIcon.innerHTML = "🔍";
+                plotIconContainer.className = "w-12 h-12 rounded-xl flex items-center justify-center border-2 border-garden-ink shadow-retro-sm bg-white";
+                plotIconContainer.innerHTML = `<i data-lucide="search" class="w-6 h-6 text-garden-ink"></i>`;
                 plotTitle.textContent = "Search Results";
 
                 Object.values(appsData).forEach(cat => {
                     cat.items.forEach(app => {
                         if (app.name.toLowerCase().includes(state.searchQuery) || app.desc.toLowerCase().includes(state.searchQuery)) {
-                            grid.innerHTML += createCard(app);
+                            grid.innerHTML += createCard(app, cat.color);
                             matchCount++;
                         }
                     });
@@ -618,6 +636,7 @@
                     noResults.classList.add('hidden');
                     grid.classList.remove('hidden');
                 }
+                lucide.createIcons();
                 return;
             }
 
@@ -627,35 +646,39 @@
             header.classList.remove('hidden');
 
             if (state.activeCategory === 'Favorites') {
-                plotIcon.className = "w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-sm bg-red-100 border border-red-200";
-                plotIcon.innerHTML = "❤️";
+                plotIconContainer.className = "w-12 h-12 rounded-xl flex items-center justify-center border-2 border-garden-ink shadow-retro-sm bg-garden-clay";
+                plotIconContainer.innerHTML = `<i data-lucide="heart" class="w-6 h-6 text-white"></i>`;
                 plotTitle.textContent = "My Favorites Plot";
                 
-                // Gather all apps that are favorites
                 let allFavs = [];
                 Object.values(appsData).forEach(cat => {
                     cat.items.forEach(app => {
                         if (state.favorites.includes(app.name)) {
+                            // Attach parent color for the card accent
+                            app.parentColor = cat.color;
                             allFavs.push(app);
                         }
                     });
                 });
 
                 allFavs.forEach(app => {
-                    grid.innerHTML += createCard(app);
+                    grid.innerHTML += createCard(app, app.parentColor);
                 });
 
             } else if (appsData[state.activeCategory]) {
                 const catData = appsData[state.activeCategory];
                 
-                plotIcon.className = `w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-sm ${catData.bgColor} border border-white`;
-                plotIcon.innerHTML = catData.icon;
+                plotIconContainer.className = `w-12 h-12 rounded-xl flex items-center justify-center border-2 border-garden-ink shadow-retro-sm ${catData.color}`;
+                plotIconContainer.innerHTML = `<i data-lucide="${catData.icon}" class="w-6 h-6 text-garden-ink"></i>`;
                 plotTitle.textContent = state.activeCategory;
 
                 catData.items.forEach(app => {
-                    grid.innerHTML += createCard(app);
+                    grid.innerHTML += createCard(app, catData.color);
                 });
             }
+            
+            // VERY IMPORTANT: Render the icons after injecting new HTML
+            lucide.createIcons();
         }
 
         // --- INITIALIZATION ---
@@ -675,7 +698,6 @@
             searchInput.addEventListener('input', handleInput);
             mobileSearchInput.addEventListener('input', handleInput);
             
-            // Sync the two search bars
             searchInput.addEventListener('keyup', (e) => { mobileSearchInput.value = e.target.value; });
             mobileSearchInput.addEventListener('keyup', (e) => { searchInput.value = e.target.value; });
         });
